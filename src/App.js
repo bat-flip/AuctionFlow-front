@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './componenets/header';
+import NavBar from './componenets/nav';
+import MainPage from './pages/main';
+import AllPage from './pages/allpage';
+import TimeoutPage from './pages/timeoutpage';
+import SoldoutPage from './pages/soldoutpage';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="basic">
+        <Header />
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/all" element={<AllPage />} />
+          <Route path="/timeout" element={<TimeoutPage />} />
+          <Route path="/soldout" element={<SoldoutPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

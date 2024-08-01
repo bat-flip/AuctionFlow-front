@@ -1,0 +1,29 @@
+/* nav.css */
+.nav-bar {
+  display: flex;
+  gap: 50px;
+  margin-top: 10px;
+  border-bottom: 1px solid rgb(211, 211, 211); /* 내비게이션 바의 경계선 추가 */
+}
+
+.nav-bar a {
+  text-decoration: none; /* 기본 링크의 밑줄 제거 */
+  color: black;
+  font-size: 13pt;
+  padding-bottom: 5px; /* 밑줄과 링크 텍스트 사이의 여백 추가 */
+  border-bottom: 2px solid transparent; /* 기본 밑줄은 투명으로 설정 */
+  transition: border-bottom 0.3s ease; /* 밑줄의 애니메이션 효과 */
+}
+
+/* 마우스 오버 시 적용될 스타일 */
+.nav-bar a:hover {
+  color: #28A745; /* 호버 시 링크 색상 */
+  font-weight: bold; /* 활성 링크에 적용할 굵기 */
+}
+
+/* 활성 링크에 적용될 스타일 */
+.nav-bar a.active {
+  color: #000000; /* 활성 링크 색상 */
+  font-weight: bold; /* 활성 링크에 적용할 굵기 */
+  border-bottom: 4px solid #000000; /* 활성 링크에 밑줄 추가 */
+}

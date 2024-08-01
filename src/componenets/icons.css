@@ -1,0 +1,17 @@
+.icons {
+    display: flex;
+    justify-content: space-around; /* 아이콘을 수평으로 분산 배치 */
+    width: 100%; /* 전체 너비 사용 */
+    margin-top: 10px; /* 상단 여백 추가 */
+  }
+  
+  .icon {
+    width: 24px; /* 아이콘의 너비 */
+    height: 24px; /* 아이콘의 높이 */
+  }
+  
+  .icon img {
+    width: 100%; /* 이미지 너비를 부모 컨테이너에 맞춤 */
+    height: auto; /* 비율에 맞춰 높이 조정 */
+  }
+  
