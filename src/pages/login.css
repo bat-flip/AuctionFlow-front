@@ -16,15 +16,16 @@
   justify-content: center;
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
+  margin-bottom: -10px;
 }
 
 .logo2-large {
-  font-size: 28pt; /* 글씨 크기 조정 */
+  font-size: 32pt; /* 글씨 크기 조정 */
   font-weight: 800; /* 두꺼운 글씨 */
 }
 
 .logo2-small {
-  font-size: 8pt; /* 글씨 크기 조정 */
+  font-size: 10pt; /* 글씨 크기 조정 */
   font-weight: 500; /* 보통 두께 */
 }
 
@@ -33,4 +34,28 @@
   font-size: 12pt; /* 글씨 크기 조정 */
   font-family:'Pretendard', sans-serif;
   color: #555; /* 색상 조정 */
+}
+
+/* 카카오 로그인 버튼 스타일 */
+.kakao-login-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 15px;
+  margin-top: 25px;
+}
+
+.kakao-login-btn img {
+  width: 100%; /* 이미지가 버튼의 전체 너비를 차지하도록 설정 */
+  max-width: 350px; /* 최대 너비 설정 */
+  border-radius: 8px;
+  height: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 버튼에 그림자 추가 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 호버 효과를 위한 전환 추가 */
+}
+
+.kakao-login-btn img:hover {
+  transform: scale(1.03); /* 호버 시 버튼 크기 확대 */
+  box-shadow: 0 6px 4px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 효과 강화 */
 }

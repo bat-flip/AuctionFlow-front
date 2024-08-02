@@ -13,11 +13,12 @@
   
   .modal-content {
     background: white;
-    padding: 20px;
+    padding: 35px;
     border-radius: 10px;
     position: relative;
-    max-width: 500px;
+    max-width: 450px;
     width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   }
   
   .modal-close {
@@ -26,7 +27,7 @@
     right: 15px;
     background: transparent;
     border: none;
-    font-size: 20pt;
+    font-size: 25pt;
     cursor: pointer;
   }
   
