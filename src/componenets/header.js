@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import Login from '../pages/login';
+import Icons from './icons';
 import Logo from './logo';
 import SearchBar from './searchbar';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from './modal';
-import Login from '../pages/login';
 import './header.css';
 import axios from 'axios';
 
@@ -20,19 +21,19 @@ function Header() {
     const authCode = urlParams.get('code');
 
     if (authCode) {
-      console.log('Authorization code:', authCode);  // 로그 추가
+      console.log('Authorization code:', authCode);
 
       axios.post(BACKEND_URI, { code: authCode })
         .then(response => {
-          console.log('Server response:', response.data);  // 로그 추가
-          const { name } = response.data;  // 백엔드 응답에서 사용자 이름을 추출
+          console.log('Server response:', response.data);
+          const { name } = response.data;
           if (name) {
-            localStorage.setItem('username', name);  // 로컬 스토리지에 사용자 이름 저장
+            localStorage.setItem('username', name);
           }
-          navigate('/');  // 로그인 후 홈 페이지로 네비게이션
+          navigate('/');
         })
         .catch(error => {
-          console.error('Error sending authorization code to backend:', error);  // 로그 추가
+          console.error('Error sending authorization code to backend:', error);
         });
     }
   }, [navigate]);
@@ -40,14 +41,19 @@ function Header() {
   return (
     <div className="header">
       <div className="top-content">
-        <button onClick={openModal}>로그인/회원가입</button>
-        <Link to="/mypage">마이페이지</Link>
+        <div className="top-buttons">
+          <button onClick={openModal}>로그인/회원가입</button>
+          <Link to="/mypage">마이페이지</Link>
+        </div>
       </div>
 
       <div className="bottom-content">
         <Logo />
         <div className="searchbar-container">
           <SearchBar />
+          <div className="search-icon">
+            <Icons /> {/* Assuming Icons component can be used to render a small icon */}
+          </div>
         </div>
       </div>
 

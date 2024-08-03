@@ -1,17 +1,45 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
 .icons {
-    display: flex;
-    justify-content: space-around; /* 아이콘을 수평으로 분산 배치 */
-    width: 100%; /* 전체 너비 사용 */
-    margin-top: 10px; /* 상단 여백 추가 */
-  }
-  
-  .icon {
-    width: 24px; /* 아이콘의 너비 */
-    height: 24px; /* 아이콘의 높이 */
-  }
-  
-  .icon img {
-    width: 100%; /* 이미지 너비를 부모 컨테이너에 맞춤 */
-    height: auto; /* 비율에 맞춰 높이 조정 */
-  }
-  
+  display: flex;
+  font-size: 25px;
+  color: #000000;
+  align-items: center; /* 아이콘을 수직으로 가운데 정렬 */
+  justify-content: flex-end; /* 아이콘과 버튼을 오른쪽으로 정렬 */
+  box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비 계산 */
+}
+
+.icon {
+  display: flex; /* 아이콘 컨테이너를 flex로 설정 */
+  align-items: center; /* 아이콘을 수직으로 가운데 정렬 */
+  justify-content: center; /* 아이콘을 수평으로 가운데 정렬 */
+  margin-right: 28px; /* 아이콘 사이의 간격 조절 */
+}
+
+
+.icon:last-child {
+  margin-right: -10px; /* 마지막 아이콘은 마진 제거 */
+}
+
+.icon:hover {
+  color: #28A745; /* 호버 시 아이콘 색상 변경 */
+}
+
+.post-btn {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  padding: 8px 16px; /* 세로 패딩 8px, 좌우 패딩 16px */
+  background-color: #222222; /* 버튼 배경색 변경 */
+  color: white;
+  border: none;
+  border-radius: 8px; /* 버튼 모서리 둥글게 */
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+}
+
+.post-btn:hover {
+  background-color: #444444; /* 버튼 호버 색상 */
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 */
+}
