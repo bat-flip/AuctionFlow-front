@@ -1,0 +1,52 @@
+/* mypage.css */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+/* font-family: 'Pretendard', sans-serif; */
+
+/* 전체 페이지 스타일 */
+.main-page {
+  display: flex;
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+  width: 250px;
+  margin-top: 20px; /* 사이드바 상단 여백 */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  padding: 0 8px;
+  font-size: 25px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.sidebar-con {
+  color: #333;
+  text-decoration: none;
+  padding: 12px 8px;
+  display: block;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-con:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.sidebar-con.active {
+  background-color: #e0e0e0;
+  color: #000;
+  font-weight: 600;
+}
+
+/* 콘텐츠 영역 스타일 */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
