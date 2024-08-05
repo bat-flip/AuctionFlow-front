@@ -5,56 +5,57 @@
 .header {
   display: flex;
   flex-direction: column; /* 세로 방향으로 배치 */
-  align-items: flex-start; /* 좌측 정렬 */
+  font-family: 'Pretendard', sans-serif;
 }
 
 .top-content {
   display: flex;
   width: 100%; /* 링크를 전체 너비로 사용 */
   justify-content: flex-end; /* 오른쪽 정렬 */
-  margin-top: 7px;
 }
 
 .top-content a {
-  margin-left: 30px;
+  margin-left: 25px;
+  margin-right: 0px;
   text-decoration: none;
-  color: black;
-  font-size: 10pt;
+  color: #444444;
+  font-size: 12px;
+  font-weight: 400;
   letter-spacing: 1px;
 }
 
 .top-content button {
   font-family: 'Pretendard', sans-serif;
-  margin-left: 30px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px; /* Set letter spacing */
   text-decoration: none;
-  color: black;
+  color: #444444;
   background: none; /* Remove default background */
   border: none; /* Remove default border */
-  color: black; /* Set text color */
-  letter-spacing: 1px; /* Set letter spacing */
-  padding: 0; /* Remove default padding */
 }
 
 .bottom-content {
+  margin-top: 15px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center; /* 수직 중앙 정렬 */
   width: 100%; /* 전체 너비 사용 */
-  margin-top: -10px; /* 상단 마진을 음수로 설정하여 올리기 */
   position: relative; /* 상대 위치 설정 */
 }
 
-.searchbar-container {
+.logo-content {
+  flex-shrink: 0; /* 로고는 축소되지 않도록 설정 */
+  margin-right: 20px; /* 로고와 나머지 내용 사이에 공간 추가 */
+}
+
+.search-content {
   flex-grow: 1; /* 가용 공간 채우기 */
   display: flex;
   justify-content: center; /* 가로 중앙 정렬 */
-  position: absolute; /* 절대 위치 설정 */
-  left: 0;
-  right: 0;
 }
 
-.searchbar-container .search-icon {
-  position: absolute;
-  right: 0; /* 오른쪽 끝에 맞추기 */
-  top: 50%;
-  transform: translateY(-50%);
+.icon-content {
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
 }

@@ -3,10 +3,9 @@ import './login.css';
 
 function Login() {
   const REST_API = '1358698c1181767dbdad5cdb6d49b935'; // 카카오 ClientID
-  const REDIRECT_URI = 'http://localhost:3000/login/oauth2/code'; // Redirect Uri
+  const REDIRECT_URI = 'http://localhost:3000/login/oauth2/code'; // Redirect URI
 
   const handleLogin = () => {
-    console.log('Login button clicked');  // 로그 추가
     const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code`;
 
     window.location.href = kakaoAuthUrl; // 카카오 로그인 페이지로 리다이렉트

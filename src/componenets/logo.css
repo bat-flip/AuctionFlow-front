@@ -2,18 +2,26 @@
 
 
 .logo {
-    display: flex;
-    align-items: baseline;
-    font-family: "Montserrat", sans-serif;
+  display: flex;
+  align-items: baseline;
+  text-decoration: none; /* 기본 링크 스타일 제거 */
+  color: inherit; /* 텍스트 색상 상속 */
+  font-family: 'Montserrat', sans-serif;
+  transition: transform 0.3s ease, color 0.2s ease; /* 부드러운 효과 추가 */
   }
+
+  .logo:hover {
+    color: #28A745; /* 호버 시 색상 변경 */
+  }
+
   
   .logo-large {
-    font-size: 28pt;
+    font-size: 35px;
     font-weight: 800;
   }
   
   .logo-small {
-    font-size: 8pt;
+    font-size: 12px;
     font-weight: 500;
   }
   

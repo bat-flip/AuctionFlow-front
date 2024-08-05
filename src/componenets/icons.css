@@ -30,7 +30,7 @@
   font-weight: 300;
   letter-spacing: 1.5px;
   padding: 8px 16px; /* 세로 패딩 8px, 좌우 패딩 16px */
-  background-color: #222222; /* 버튼 배경색 변경 */
+  background-color: #000000; /* 버튼 배경색 변경 */
   color: white;
   border: none;
   border-radius: 8px; /* 버튼 모서리 둥글게 */
@@ -40,6 +40,6 @@
 }
 
 .post-btn:hover {
-  background-color: #444444; /* 버튼 호버 색상 */
+  background-color: #000000; /* 버튼 호버 색상 */
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 */
 }
