@@ -1,0 +1,187 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+/* font-family: 'Pretendard', sans-serif; */
+
+.post-page {
+    max-width: 70%;
+    padding: 25px;
+    margin: 0 auto;
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  .page-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #000000;
+    margin-bottom: 20px; /* 제목과 다음 요소 간의 간격 */
+    padding-bottom: 5px; /* 제목과 border-bottom 사이의 간격 */
+    border-bottom: 3px solid #000000;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #222222;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+/* 파일 입력 필드 */
+  .form-group input[type="file"] {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 5px; /* 요소들 사이의 간격 조정 */
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 300;
+  }
+  
+/* 텍스트 입력 필드 */
+.form-group input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 5px; /* 요소들 사이의 간격 조정 */
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  /* 숫자 입력 필드 */
+  .form-group input[type="number"] {
+    width: 30%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 5px; /* 요소들 사이의 간격 조정 */
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  /* 선택 박스 (드롭다운) */
+  .form-group select {
+    width: 30%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* 요소들 사이의 간격 조정 */
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  /* 텍스트 영역 (textarea) */
+  .form-group textarea {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* 요소들 사이의 간격 조정 */
+    min-height: 200px; /* 기본 높이 설정 */
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  
+  .form-group input[type="text"]:focus,
+  .form-group input[type="number"]:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #00c853;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 200, 83, 0.25);
+  }
+  
+  textarea {
+    font-family: 'Pretendard', sans-serif;
+    height: 100px;
+    resize: none;
+  }
+  
+  .radio-group label {
+    font-family: 'Pretendard', sans-serif;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+  }
+  
+  .radio-group input[type="radio"] {
+    font-family: 'Pretendard', sans-serif;
+    margin-right: 10px;
+  }
+  
+  .small {
+    font-family: 'Pretendard', sans-serif;
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .time-settings {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .time-settings div {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .time-settings label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  .time-settings input[type="datetime-local"] {
+    font-family: 'Pretendard', sans-serif;
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* 요소들 사이의 간격 조정 */
+    font-family: 'Pretendard', sans-serif;
+  }
+
+  .time-settings input[type="datetime-local"]:focus {
+    border-color: #00c853;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 200, 83, 0.25);
+  }
+  
+  hr {
+    border: 0.5px solid #eeeeee;
+    margin: 20px 0;
+  }
+  
+  .submit-button {
+    font-family: 'Pretendard', sans-serif;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #000000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .submit-button:hover {
+    background-color: #161616;
+  }
