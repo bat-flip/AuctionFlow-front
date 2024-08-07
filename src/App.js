@@ -15,25 +15,26 @@ import TimeoutPage from './pages/timeoutpage';
 import SoldoutPage from './pages/soldoutpage';
 import './App.css';
 
-const Layout = ({ children }) => {
+const Default = ({ children }) => {
   const location = useLocation();
 
-  // List of paths where NavBar should not be rendered
-  const noNavBarPaths = ['/post'];
+  // '/post'와 '/mypage'로 시작하는지 확인
+  const hideNavBar = location.pathname === '/post' || location.pathname.startsWith('/mypage');
 
   return (
     <div className="basic">
       <Header />
-      {!noNavBarPaths.includes(location.pathname) && <NavBar />}
+      {!hideNavBar && <NavBar />}
       {children}
     </div>
   );
 };
 
+
 function App() {
   return (
     <Router>
-      <Layout>
+      <Default>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />}>
@@ -48,7 +49,7 @@ function App() {
           <Route path="/timeout" element={<TimeoutPage />} />
           <Route path="/soldout" element={<SoldoutPage />} />
         </Routes>
-      </Layout>
+      </Default>
     </Router>
   );
 }

@@ -4,9 +4,12 @@
 /* font-family: 'Pretendard', sans-serif; */
 
 /* 전체 페이지 스타일 */
-.main-page {
+.mypage {
+  margin-top: 17px;
   display: flex;
   font-family: 'Pretendard', sans-serif;
+  border-top: 1px solid rgb(237, 237, 237);
+  padding-top: 10px; /* border-top과 내용 사이의 간격 */
 }
 
 /* 사이드바 스타일 */
@@ -29,19 +32,14 @@
   text-decoration: none;
   padding: 12px 8px;
   display: block;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: background-color 0.2s, color 0.2s;
-}
-
-.sidebar-con:hover {
-  background-color: #f0f0f0;
-  color: #000;
 }
 
 .sidebar-con.active {
   background-color: #e0e0e0;
   color: #000;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* 콘텐츠 영역 스타일 */

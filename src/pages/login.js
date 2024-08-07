@@ -2,13 +2,9 @@ import React from 'react';
 import './login.css';
 
 function Login() {
-  const REST_API = '1358698c1181767dbdad5cdb6d49b935'; // 카카오 ClientID
-  const REDIRECT_URI = 'http://localhost:3000/login/oauth2/code'; // Redirect URI
 
   const handleLogin = () => {
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code`;
-
-    window.location.href = kakaoAuthUrl; // 카카오 로그인 페이지로 리다이렉트
+    window.location.href = 'http://localhost:8080/oauth2/authorization/kakao'; // 카카오 로그인 페이지로 리다이렉트
   };
 
   return (
@@ -24,7 +20,7 @@ function Login() {
         onClick={handleLogin} 
         className="kakao-login-btn"
       >
-        <img src="/kakaologin.png" alt="카카오로 로그인" />
+        <img src="/kakaologin.png" alt="카카오 로그인" />
       </button>
     </div>
   );

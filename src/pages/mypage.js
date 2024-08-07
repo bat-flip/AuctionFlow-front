@@ -4,7 +4,7 @@ import './mypage.css';
 
 function MyPage() {
   return (
-    <div className="main-page">
+    <div className="mypage">
       <nav className="sidebar">
         <div className="sidebar-title">마이페이지</div>
         <NavLink to="/mypage" className="sidebar-con" end>내정보/상점 관리</NavLink>
