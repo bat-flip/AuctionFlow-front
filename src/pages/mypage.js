@@ -7,7 +7,7 @@ function MyPage() {
     <div className="mypage">
       <nav className="sidebar">
         <div className="sidebar-title">마이페이지</div>
-        <NavLink to="/mypage" className="sidebar-con" end>내정보/상점 관리</NavLink>
+        <NavLink to="/mypage" className="sidebar-con" end>내 정보 / 상점 관리</NavLink>
         <NavLink to="/mypage/purchased" className="sidebar-con">구매 내역</NavLink>
         <NavLink to="/mypage/sales" className="sidebar-con">판매 내역</NavLink>
         <NavLink to="/mypage/fav" className="sidebar-con">관심</NavLink>

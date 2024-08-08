@@ -1,0 +1,15 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+.talk {
+  font-family: 'Pretendard', sans-serif;
+  max-width: 100%;
+}
+
+.talk-header {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #000;
+  border-bottom: 3px solid #000;
+  padding-bottom: 10px;
+}

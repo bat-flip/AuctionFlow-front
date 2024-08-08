@@ -1,11 +1,13 @@
 import React from 'react';
+import './fav.css';
 
-function MainPage() {
+function Favpage() {
+
   return (
-    <div className="main-page">
-      찜
+    <div className="fav">
+      <div className="fav-header">관심</div>
     </div>
   );
 }
 
-export default MainPage;
+export default Favpage;
