@@ -1,0 +1,43 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+.purchased {
+  font-family: 'Pretendard', sans-serif;
+  max-width: 100%;
+}
+
+.purchased-header {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #000;
+  border-bottom: 3px solid #000;
+  padding-bottom: 10px;
+}
+
+.filter-buttons {
+    margin-bottom: 30px;
+  }
+  
+  .filter-buttons button {
+    margin-right: 20px;
+    padding: 8px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 20px;
+    background-color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 300;
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  .filter-buttons button.active {
+    transition: color 0.3s ease; /* 부드러운 효과 추가 */
+    border: 2px solid #000000;
+    background-color: #000000;
+    font-weight: 600;
+    color: white;
+  }
+
+  .purchased-content {
+    padding: 0px 15px;
+  }

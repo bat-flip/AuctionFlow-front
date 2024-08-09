@@ -1,11 +1,13 @@
 import React from 'react';
+import './talk.css';
 
-function MainPage() {
+function TalkPage() {
+
   return (
-    <div className="main-page">
-      채팅
+    <div className="talk">
+      <div className="talk-header">채팅</div>
     </div>
   );
 }
 
-export default MainPage;
+export default TalkPage;

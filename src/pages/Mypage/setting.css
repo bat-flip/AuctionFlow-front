@@ -1,0 +1,164 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+.setting {
+  font-family: 'Pretendard', sans-serif;
+  max-width: 100%;
+}
+
+.setting-header {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #000;
+  border-bottom: 3px solid #000;
+  padding-bottom: 10px;
+}
+
+.setting-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: left;
+  color: #000;
+}
+
+.setting-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0px 0px 8px;
+  color: #666666;
+}
+
+.User-section, .Store-section, .Info-section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ededed;
+    padding-bottom: 30px;
+  }
+  
+.Info-section2 {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+}
+  
+.UserInfo {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px;
+  margin-left: 10px;
+  background-color: #eee;
+  border-radius: 8px;
+  width: 15%;
+}
+
+.Store-info input[type="text"] {
+  font-size: 14px;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  border-radius: 8px;
+  width: 70%;
+  text-align: left;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.Info-section input[type="text"], .Info-section2 input[type="text"] {
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 8px;
+    width: 80%;
+    margin-right: 20px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+
+.Store-info input[type="text"]:focus, .Info-section input[type="text"]:focus {
+  border-color: #00c853;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 200, 83, 0.25);
+}
+
+.StoreImage-container {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.StoreImage-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.StoreImage {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #efefef;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.StoreImage:hover {
+  border-color: #3ee146;
+}
+
+.StoreImage-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.Store-info {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 180px);
+}
+
+.StoreSet-button {
+    display: inline-block;
+    padding: 8px 20px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.StoreSet-button:hover {
+  background-color: #222222;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.StoreSet-button2 {
+    display: inline-block;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  .StoreSet-button2:hover {
+    background-color: #222222;
+  }
+  
