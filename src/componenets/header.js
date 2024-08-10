@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Login from '../pages/login';
+import Login from './login';
 import Icons from './icons';
 import Logo from './logo';
 import SearchBar from './searchbar';
