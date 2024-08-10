@@ -1,14 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { useDaumPostcodePopup } from 'react-daum-postcode'; 
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 import './setting.css';
 
 function SettingPage() {
   const [storeImage, setStoreImage] = useState(null);
   const [addressObj, setAddressObj] = useState({
-    zipcode: '',          // 우편번호 필드 추가
+    zipcode: '',
     areaAddress: '',
     townAddress: ''
   });
+  const [isNameEditable, setIsNameEditable] = useState(false);
+  const [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
+  const [isAccountEditable, setIsAccountEditable] = useState(false);
   const logoImgInput = useRef(null);
   const postcodeScriptUrl = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
 
@@ -38,7 +41,7 @@ function SettingPage() {
         extraAddress += data.bname; //법정동, 법정리
       }
       if (data.buildingName !== '') { //건물명
-        extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+        extraAddress += (extraAddress !== '' ? `, ${extraAddress}` : data.buildingName);
       }
       //지역주소 제외 전체주소 치환
       fullAddress = fullAddress.replace(localAddress, '');
@@ -53,8 +56,12 @@ function SettingPage() {
 
   const handleClick = () => {
     //주소검색이 완료되고, 결과 주소를 클릭 시 해당 함수 수행
-  	open({onComplete: handleComplete});
+    open({ onComplete: handleComplete });
   }
+
+  const toggleEditable = (setter) => {
+    setter(prev => !prev);
+  };
 
   return (
     <div className="setting">
@@ -87,41 +94,67 @@ function SettingPage() {
           </div>
           <div className="Store-info">
             <div className="setting-subtitle">상점 이름</div>
-              <div className="input-wrapper">
-                <input type="text" placeholder="상점 이름을 설정해주세요." />
-                <button className="StoreSet-button2">변경</button>
-              </div>
-              <div className="setting-subtitle">상점 소개</div>
-              <div className="input-wrapper">
-                <input type="text" placeholder="상점 소개를 입력해주세요." />
-                <button className="StoreSet-button2">변경</button>
-              </div>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="상점 이름을 설정해주세요."
+                disabled={!isNameEditable}
+              />
+              <button
+                className="StoreSet-button"
+                onClick={() => toggleEditable(setIsNameEditable)}
+              >
+                {isNameEditable ? '확인' : '변경'}
+              </button>
+            </div>
+            <div className="setting-subtitle">상점 소개</div>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="상점 소개를 입력해주세요."
+                disabled={!isDescriptionEditable}
+              />
+              <button
+                className="StoreSet-button"
+                onClick={() => toggleEditable(setIsDescriptionEditable)}
+              >
+                {isDescriptionEditable ? '확인' : '변경'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
       <div className="Info-section">
         <div className="setting-title">주소지 정보</div>
-        <input 
+        <input
           type="text"
           className="zipcode-input"
-          placeholder="우편번호" 
+          placeholder="우편번호"
           value={addressObj.zipcode}  // 우편번호 표시
           readOnly
         />
         <button className="StoreSet-button" onClick={handleClick}>주소 찾기</button>
-        <input 
+        <input
           type="text"
-          placeholder="주소를 입력해주세요." 
+          placeholder="주소를 입력해주세요."
           value={addressObj.areaAddress || addressObj.townAddress ? `${addressObj.areaAddress} ${addressObj.townAddress}` : ''}
-          onChange={(e) => {}}
           readOnly
         />
         <input type="text" placeholder="상세 주소를 입력해주세요." />
       </div>
       <div className="Info-section2">
         <div className="setting-title">계좌 정보</div>
-        <input type="text" placeholder="계좌 정보를 입력해주세요." />
-        <button className="StoreSet-button">변경</button>
+        <input
+          type="text"
+          placeholder="계좌 정보를 입력해주세요."
+          disabled={!isAccountEditable}
+        />
+        <button
+          className="StoreSet-button"
+          onClick={() => toggleEditable(setIsAccountEditable)}
+        >
+          {isAccountEditable ? '확인' : '변경'}
+        </button>
       </div>
     </div>
   );
