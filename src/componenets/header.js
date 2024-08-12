@@ -1,22 +1,81 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Login from './login';
 import Icons from './icons';
 import Logo from './logo';
 import SearchBar from './searchbar';
 import Modal from './modal';
+import { useApp } from '../context/AppContext';
 import './header.css';
 
 function Header() {
+  const AuthenticUrl = process.env.REACT_APP_AUTHENTIC_URL;
+  const LogoutUrl = process.env.REACT_APP_LOGOUT_URL;
+  
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const { userInfo, setUserInfo } = useApp();
+  const [logoutMessage, setLogoutMessage] = useState(null); // 추가된 상태
+  const navigate = useNavigate();
+
+  // 모달 열기
   const openModal = () => setModalOpen(true);
+  // 모달 닫기
   const closeModal = () => setModalOpen(false);
+
+  // 사용자 정보 가져오기
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get(`${AuthenticUrl}/userInfo`, { withCredentials: true });
+      if (response.status === 200) {
+        const data = response.data;
+        console.log('User info fetched:', data);
+        setAuthenticated(true);
+        setUserInfo(data); // Context에 사용자 정보 저장
+      } else {
+        handleUnauthenticated();
+      }
+    } catch (error) {
+      console.error('Failed to fetch user info', error);
+      handleUnauthenticated();
+    }
+  };
+
+  const handleUnauthenticated = () => {
+    setAuthenticated(false);
+    setUserInfo(null); // Context에서 사용자 정보 제거
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
+  // 로그아웃 처리
+  const handleLogout = async () => {
+    try {
+      await axios.post(LogoutUrl, {}, { withCredentials: true });
+      console.log('Logout successful');
+      handleUnauthenticated();
+      setLogoutMessage('로그아웃 되었습니다!'); // 메시지 설정
+      setTimeout(() => {
+        setLogoutMessage(null); // 3초 후 메시지 숨기기
+      }, 2000);
+      navigate('/'); // 홈 페이지로 리다이렉트
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
+  };
 
   return (
     <div className="header">
       <div className="top-content">
         <div className="top-buttons">
-          <button onClick={openModal}>로그인/회원가입</button>
+          {isAuthenticated ? (
+            <button onClick={handleLogout}>로그아웃</button>
+          ) : (
+            <button onClick={openModal}>로그인/회원가입</button>
+          )}
           <Link to="/mypage">마이페이지</Link>
         </div>
       </div>
@@ -29,13 +88,16 @@ function Header() {
           <SearchBar />
         </div>
         <div className="icon-content">
-          <Icons /> {/* Icons 컴포넌트가 작은 아이콘을 렌더링한다고 가정 */}
+          <Icons />
         </div>
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <Login />
       </Modal>
+
+      {/* 로그아웃 메시지 */}
+      {logoutMessage && <div className="logout-message">{logoutMessage}</div>}
     </div>
   );
 }

@@ -13,6 +13,7 @@ import PostPage from './pages/post';
 import AllPage from './pages/allpage';
 import TimeoutPage from './pages/timeoutpage';
 import SoldoutPage from './pages/soldoutpage';
+import { AppProvider } from './context/AppContext';
 import './App.css';
 
 const Default = ({ children }) => {
@@ -30,26 +31,27 @@ const Default = ({ children }) => {
   );
 };
 
-
 function App() {
   return (
     <Router>
-      <Default>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/mypage" element={<MyPage />}>
-            <Route index element={<SettingPage />} /> {/* 기본 페이지 설정 */}
-            <Route path="purchased" element={<PurchasedPage />} />
-            <Route path="sales" element={<SalesPage />} />
-            <Route path="fav" element={<FavPage />} />
-            <Route path="talk" element={<TalkPage />} />
-          </Route>
-          <Route path="/post" element={<PostPage />} />
-          <Route path="/all" element={<AllPage />} />
-          <Route path="/timeout" element={<TimeoutPage />} />
-          <Route path="/soldout" element={<SoldoutPage />} />
-        </Routes>
-      </Default>
+      <AppProvider> {/* Context Provider로 감싸기 */}
+        <Default>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/mypage" element={<MyPage />}>
+              <Route index element={<SettingPage />} /> {/* 기본 페이지 설정 */}
+              <Route path="purchased" element={<PurchasedPage />} />
+              <Route path="sales" element={<SalesPage />} />
+              <Route path="fav" element={<FavPage />} />
+              <Route path="talk" element={<TalkPage />} />
+            </Route>
+            <Route path="/post" element={<PostPage />} />
+            <Route path="/all" element={<AllPage />} />
+            <Route path="/timeout" element={<TimeoutPage />} />
+            <Route path="/soldout" element={<SoldoutPage />} />
+          </Routes>
+        </Default>
+      </AppProvider>
     </Router>
   );
 }

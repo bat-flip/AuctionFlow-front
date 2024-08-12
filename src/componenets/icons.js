@@ -1,6 +1,5 @@
 import React from 'react';
-import { IoNotificationsOutline } from "react-icons/io5";
-import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { IoNotificationsOutline, IoChatboxEllipsesOutline } from "react-icons/io5";
 import { GoHeart } from "react-icons/go";
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅 가져오기
 import './icons.css'; // 아이콘 스타일을 위한 CSS 파일
@@ -8,23 +7,31 @@ import './icons.css'; // 아이콘 스타일을 위한 CSS 파일
 function Icons() {
   const navigate = useNavigate(); // useNavigate 훅 초기화
 
-  const handleClick = () => {
+  const handleChatClick = () => {
+    navigate('/mypage/talk'); // '/talk' 경로로 이동
+  };
+
+  const handleHeartClick = () => {
+    navigate('/mypage/fav'); // '/favorites' 경로로 이동 (예시)
+  };
+
+  const handlePostButtonClick = () => {
     navigate('/post'); // '/post' 경로로 이동
   };
 
   return (
     <div className="icons">
-      <div className="icon">
+      <div className="icon" >
         <IoNotificationsOutline />
       </div>
-      <div className="icon">
+      <div className="icon" onClick={handleChatClick}>
         <IoChatboxEllipsesOutline />
       </div>
-      <div className="icon">
-        <GoHeart /> 
+      <div className="icon" onClick={handleHeartClick}>
+        <GoHeart />
       </div>
       <div className="icon">
-        <div className="post-btn" onClick={handleClick}>등록하기</div>
+        <div className="post-btn" onClick={handlePostButtonClick}>등록</div>
       </div>
     </div>
   );

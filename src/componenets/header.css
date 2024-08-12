@@ -59,3 +59,18 @@
   display: flex;
   align-items: center; /* 수직 중앙 정렬 */
 }
+
+.logout-message {
+  font-family: 'Pretendard', sans-serif;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #000000; /* 메시지 배경색 */
+  color: white; /* 텍스트 색상 */
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+}
