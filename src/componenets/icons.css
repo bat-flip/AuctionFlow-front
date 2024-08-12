@@ -2,7 +2,7 @@
 
 .icons {
   display: flex;
-  font-size: 25px;
+  font-size: 28px;
   color: #000000;
   align-items: center; /* 아이콘을 수직으로 가운데 정렬 */
   justify-content: flex-end; /* 아이콘과 버튼을 오른쪽으로 정렬 */
@@ -14,6 +14,7 @@
   align-items: center; /* 아이콘을 수직으로 가운데 정렬 */
   justify-content: center; /* 아이콘을 수평으로 가운데 정렬 */
   margin-right: 28px; /* 아이콘 사이의 간격 조절 */
+  transition: color 0.3s ease;
 }
 
 
@@ -40,6 +41,6 @@
 }
 
 .post-btn:hover {
-  background-color: #000000; /* 버튼 호버 색상 */
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 */
+  background-color: #333333; /* 다크 그레이로 배경색 변경 */
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* 그림자 효과 추가 */
 }

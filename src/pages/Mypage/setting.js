@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { useApp } from '../../context/AppContext';
 import './setting.css';
 
 function SettingPage() {
@@ -9,6 +10,7 @@ function SettingPage() {
     areaAddress: '',
     townAddress: ''
   });
+  const { userInfo } = useApp()
   const [isNameEditable, setIsNameEditable] = useState(false);
   const [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
   const [isAccountEditable, setIsAccountEditable] = useState(false);
@@ -65,10 +67,10 @@ function SettingPage() {
 
   return (
     <div className="setting">
-      <div className="setting-header">내 정보/상점 관리</div>
+      <div className="setting-header">내 정보 / 상점 관리</div>
       <div className="User-section">
         <div className="setting-title">내 정보</div>
-        <div className="UserInfo">김 익명 님</div>
+        <div className="UserInfo">{userInfo ? `${userInfo.nickname}` : '로그인이 필요합니다.'}</div>
       </div>
       <div className="Store-section">
         <div className="setting-title">상점 정보</div>
