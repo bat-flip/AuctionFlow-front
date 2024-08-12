@@ -26,25 +26,79 @@
   .form-group label {
     display: block;
     font-size: 16px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     color: #222222;
     font-family: 'Pretendard', sans-serif;
     font-weight: 600;
     letter-spacing: 1px;
   }
 
-/* 파일 입력 필드 */
-  .form-group input[type="file"] {
-    width: 50%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    margin-bottom: 5px; /* 요소들 사이의 간격 조정 */
-    font-family: 'Pretendard', sans-serif;
-    font-weight: 300;
-  }
-  
+.PostImage-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  justify-content: center;
+  background-color: #f9f9f9;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  position: relative;
+}
+
+.PostImage-container:hover {
+  border-color: #00c853;
+}
+
+.PostImage-message {
+  font-family: 'Pretendard', sans-serif;
+  color: #777;
+  text-align: center;
+}
+
+.PostSubImage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.PostSubImage-item {
+  position: relative;
+  display: inline-block;
+}
+
+.PostSubImage-img {
+  width: 120px; /* 이미지 크기 조정 */
+  height: 120px;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.PostSubImage-delete {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.image-input {
+  display: none;
+}
+
 /* 텍스트 입력 필드 */
 .form-group input[type="text"] {
     width: 50%;
@@ -52,7 +106,7 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-sizing: border-box;
-    margin-bottom: 5px; /* 요소들 사이의 간격 조정 */
+    margin-bottom: 10px;
     font-family: 'Pretendard', sans-serif;
   }
   
@@ -62,8 +116,8 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
+    margin-bottom: 10px;
     box-sizing: border-box;
-    margin-bottom: 5px; /* 요소들 사이의 간격 조정 */
     font-family: 'Pretendard', sans-serif;
   }
   
@@ -74,7 +128,7 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-sizing: border-box;
-    margin-bottom: 10px; /* 요소들 사이의 간격 조정 */
+    margin-bottom: 10px;
     font-family: 'Pretendard', sans-serif;
   }
   
@@ -84,10 +138,11 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
+    margin-bottom: 10px;
     box-sizing: border-box;
-    margin-bottom: 10px; /* 요소들 사이의 간격 조정 */
-    min-height: 200px; /* 기본 높이 설정 */
+    height: 200px; /* 기본 높이 설정 */
     font-family: 'Pretendard', sans-serif;
+    resize: none;
   }
   
   
@@ -98,12 +153,6 @@
     border-color: #00c853;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 200, 83, 0.25);
-  }
-  
-  textarea {
-    font-family: 'Pretendard', sans-serif;
-    height: 100px;
-    resize: none;
   }
   
   .radio-group label {
@@ -163,25 +212,32 @@
   }
   
   hr {
-    border: 0.5px solid #eeeeee;
+    border: 1px solid #eeeeee;
     margin: 20px 0;
   }
-  
-  .submit-button {
-    font-family: 'Pretendard', sans-serif;
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #000000;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .submit-button:hover {
-    background-color: #161616;
-  }
+
+/* 기존 CSS */
+.post-button {
+  font-family: 'Pretendard', sans-serif;
+  padding: 12px 50px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #000000;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+}
+
+.post-button:hover {
+  background-color: #1c1c1c;
+}
+
+/* 버튼 컨테이너를 중앙에 정렬하기 */
+.button-container {
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  margin-top: 30px; /* 버튼과 상단 요소 사이의 간격 조정 */
+}

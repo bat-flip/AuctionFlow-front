@@ -2,9 +2,10 @@ import React from 'react';
 import './login.css';
 
 function Login() {
+  const LoginURL = process.env.REACT_APP_LOGIN_URL;
 
   const handleLogin = () => {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/kakao'; // 카카오 로그인 페이지로 리다이렉트
+    window.location.href = LoginURL; // 카카오 로그인 페이지로 리다이렉트
   };
 
   return (
