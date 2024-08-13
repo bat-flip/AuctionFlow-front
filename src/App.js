@@ -11,7 +11,7 @@ import FavPage from './pages/Mypage/fav';
 import TalkPage from './pages/Mypage/talk';
 import PostPage from './pages/post';
 import ProductPage from './pages/product';
-import ProductDetail from './pages/productdetail';
+import ProductDetailPage from './pages/productdetail';
 import TimeoutPage from './pages/timeout';
 import SoldoutPage from './pages/soldout';
 import { AppProvider } from './context/AppContext';
@@ -48,7 +48,7 @@ function App() {
             </Route>
             <Route path="/post" element={<PostPage />} />
             <Route path="/products" element={<ProductPage />} />
-            <Route path="/products/1" element={<ProductDetail />} />
+            <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route path="/timeout" element={<TimeoutPage />} />
             <Route path="/soldout" element={<SoldoutPage />} />
           </Routes>

@@ -1,5 +1,6 @@
 import React from 'react';
-import './pages.css'; // CSS 파일을 추가해 스타일링을 위한 클래스 이름을 정의할 수 있습니다.
+import { useNavigate } from 'react-router-dom';
+import './pages.css';
 
 const products = [
   { id: 1, title: 'Nike x Drake Nocta NRG', price: '150,200원', imageUrl: 'https://via.placeholder.com/150' },
@@ -15,12 +16,22 @@ const products = [
 ];
 
 function HomePage() {
+  const navigate = useNavigate();
+
+  const handleCardClick = (id) => {
+    navigate(`/products/${id}`);
+  };
+
   return (
     <div className="products-container">
       <div className="pages-title">실시간 인기순위</div>
       <div className="product-grid">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
+          <div 
+            key={product.id} 
+            className="product-card" 
+            onClick={() => handleCardClick(product.id)}  // 클릭 시 이동
+          >
             <img src={product.imageUrl} alt={product.title} className="product-image" />
             <div className="product-title">{product.title}</div>
             <div className="product-price">{product.price}</div>
