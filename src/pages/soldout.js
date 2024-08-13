@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './pages.css'; // CSS 파일을 추가해 스타일링을 위한 클래스 이름을 정의할 수 있습니다.
 
 const products = [
@@ -15,23 +14,21 @@ const products = [
   { id: 10, title: '상품 10', price: '250,000원', imageUrl: 'https://via.placeholder.com/150' },
 ];
 
-function HomePage() {
+function SoldoutPage() {
   return (
     <div className="products-container">
       <div className="pages-title">판매 완료</div>
       <div className="product-grid">
         {products.map((product) => (
-          <Link key={product.id} to={`/products/${product.id}`} className="product-link">
-            <div className="product-card">
-              <img src={product.imageUrl} alt={product.title} className="product-image" />
-              <div className="product-title">{product.title}</div>
-              <div className="product-price">{product.price}</div>
-            </div>
-          </Link>
+          <div key={product.id} className="product-card">
+            <img src={product.imageUrl} alt={product.title} className="product-image" />
+            <div className="product-title">{product.title}</div>
+            <div className="product-price">{product.price}</div>
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-export default HomePage;
+export default SoldoutPage;
