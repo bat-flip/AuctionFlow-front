@@ -1,7 +1,7 @@
 import React from 'react';
 
-function TimeoutPage() {
+function Timeout() {
   return <div>종료 임박 페이지</div>;
 }
 
-export default TimeoutPage;
+export default Timeout;

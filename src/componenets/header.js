@@ -70,16 +70,16 @@ function Header() {
   return (
     <div className="header">
       <div className="top-content">
-        <div className="top-buttons">
-          {isAuthenticated ? (
-            <button onClick={handleLogout}>로그아웃</button>
-          ) : (
-            <button onClick={openModal}>로그인/회원가입</button>
-          )}
-          <Link to="/mypage">마이페이지</Link>
-        </div>
+        {isAuthenticated ? (
+          <div className="loginuser-container">
+            <span className="loginuser">{userInfo ? `${userInfo.nickname}` : ''}님</span>
+            <button onClick={handleLogout} className="logout-button">로그아웃</button>
+          </div>
+        ) : (
+          <button onClick={openModal} className="login-button">로그인/회원가입</button>
+        )}
+        <Link to="/mypage" className="mypage-link">마이페이지</Link>
       </div>
-
       <div className="bottom-content">
         <div className="logo-content">
           <Logo />
