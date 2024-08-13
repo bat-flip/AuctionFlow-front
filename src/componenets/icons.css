@@ -2,45 +2,73 @@
 
 .icons {
   display: flex;
-  font-size: 28px;
+  font-size: 16px; /* 텍스트 크기 조정 */
   color: #000000;
-  align-items: center; /* 아이콘을 수직으로 가운데 정렬 */
-  justify-content: flex-end; /* 아이콘과 버튼을 오른쪽으로 정렬 */
+  align-items: center; /* 아이콘 수직 가운데 정렬 */
+  justify-content: flex-end; /* 아이콘 오른쪽 정렬 */
   box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비 계산 */
 }
 
 .icon {
-  display: flex; /* 아이콘 컨테이너를 flex로 설정 */
-  align-items: center; /* 아이콘을 수직으로 가운데 정렬 */
-  justify-content: center; /* 아이콘을 수평으로 가운데 정렬 */
-  margin-right: 28px; /* 아이콘 사이의 간격 조절 */
-  transition: color 0.3s ease;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 500;
+  color: #5b5b5b;
+  display: flex; /* 아이콘 내부 정렬 */
+  align-items: center; /* 아이콘 수직 가운데 정렬 */
+  justify-content: center; /* 아이콘 수평 가운데 정렬 */
+  margin-right: 30px; /* 아이콘 사이 간격 */
+  transition: color 0.3s ease; /* 색상 트랜지션 */
+  cursor: pointer; /* 클릭 가능 */
 }
 
-
 .icon:last-child {
-  margin-right: -10px; /* 마지막 아이콘은 마진 제거 */
+  margin-right: -5px; /* 마지막 아이콘 여백 없음 */
 }
 
 .icon:hover {
-  color: #28A745; /* 호버 시 아이콘 색상 변경 */
+  color: #28A745; /* 호버 시 색상 변경 */
+}
+
+.notification-icon {
+  position: relative; /* 툴팁 위치 조정 */
+}
+
+.notification-tooltip {
+  position: absolute;
+  top: 100%; /* 아이콘 바로 아래 위치 */
+  right: 0;
+  background-color: #fff; /* 툴팁 배경색 */
+  border: 1px solid #ddd; /* 툴팁 테두리 */
+  border-radius: 4px; /* 둥근 모서리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  padding: 10px;
+  margin-top: 5px;
+  white-space: nowrap; /* 줄바꿈 */
+}
+
+.tooltip-item {
+  margin-bottom: 15px;
+  color: #4f4f4f;
+}
+
+.tooltip-item:last-child {
+  margin-bottom: 0;
 }
 
 .post-btn {
   font-family: 'Pretendard', sans-serif;
   font-weight: 300;
   letter-spacing: 1.5px;
-  padding: 8px 16px; /* 세로 패딩 8px, 좌우 패딩 16px */
-  background-color: #000000; /* 버튼 배경색 변경 */
+  padding: 6px 14px; /* 버튼 패딩 */
+  background-color: #28A745; /* 버튼 배경색 */
   color: white;
   border: none;
-  border-radius: 8px; /* 버튼 모서리 둥글게 */
+  border-radius: 15px; /* 둥근 모서리 */
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+  transition: background-color 0.3s ease; /* 배경색 트랜지션 */
 }
 
 .post-btn:hover {
-  background-color: #333333; /* 다크 그레이로 배경색 변경 */
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* 그림자 효과 추가 */
+  background-color: #0d8229; /* 호버 시 배경색 변경 */
 }

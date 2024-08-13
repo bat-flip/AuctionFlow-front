@@ -8,31 +8,52 @@
   font-family: 'Pretendard', sans-serif;
 }
 
+/* 전체 상단 콘텐츠를 오른쪽 정렬로 설정 */
 .top-content {
   display: flex;
-  width: 100%; /* 링크를 전체 너비로 사용 */
-  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
+  gap: 20px; /* 요소 사이의 간격 조정 */
+  width: 100%; /* 전체 너비 사용 */
 }
 
-.top-content a {
-  margin-left: 25px;
-  margin-right: 0px;
-  text-decoration: none;
-  color: #444444;
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 1px;
+/* 사용자 정보와 로그아웃 버튼을 포함하는 컨테이너 스타일 */
+.loginuser-container {
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
 }
 
-.top-content button {
+/* 사용자 정보 스타일 */
+.loginuser {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  background-color: #c5c5c5;
+  border-radius: 30px;
+  padding: 2px 15px;
+}
+
+/* 로그인,로그아웃 버튼 스타일 */
+.login-button,
+.logout-button {
   font-family: 'Pretendard', sans-serif;
   font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 1px; /* Set letter spacing */
+  font-weight: 500;
+  letter-spacing: 1px; /* 문자 간격 조정 */
+  color: #444444;
+  background: none; /* 기본 배경 제거 */
+  border: none; /* 기본 테두리 제거 */
+  cursor: pointer; /* 클릭 가능한 버튼으로 표시 */
+}
+
+/* 마이페이지 링크 스타일 */
+.mypage-link {
   text-decoration: none;
   color: #444444;
-  background: none; /* Remove default background */
-  border: none; /* Remove default border */
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 .bottom-content {
@@ -66,7 +87,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #000000; /* 메시지 배경색 */
+  background-color: #040404; /* 메시지 배경색 */
   color: white; /* 텍스트 색상 */
   padding: 10px 20px;
   border-radius: 8px;
