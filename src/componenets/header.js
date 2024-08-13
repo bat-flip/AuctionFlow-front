@@ -10,13 +10,13 @@ import { useApp } from '../context/AppContext';
 import './header.css';
 
 function Header() {
-  const AuthenticUrl = process.env.REACT_APP_AUTHENTIC_URL;
-  const LogoutUrl = process.env.REACT_APP_LOGOUT_URL;
+  const AuthenticUrl = process.env.REACT_APP_AUTHENTIC_URL; // 로그인 여부 및 정보 URL
+  const LogoutUrl = process.env.REACT_APP_LOGOUT_URL; // 로그아웃 처리 URL
   
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [isAuthenticated, setAuthenticated] = useState(false);
-  const { userInfo, setUserInfo } = useApp();
-  const [logoutMessage, setLogoutMessage] = useState(null); // 추가된 상태
+  const [isModalOpen, setModalOpen] = useState(false); // 로그인 모달
+  const [isAuthenticated, setAuthenticated] = useState(false); // 로그인 여부 확인
+  const { userInfo, setUserInfo } = useApp(); // Context에 userInfo
+  const [logoutMessage, setLogoutMessage] = useState(null); // 로그아웃 메시지
   const navigate = useNavigate();
 
   // 모달 열기
@@ -27,10 +27,10 @@ function Header() {
   // 사용자 정보 가져오기
   const fetchUserInfo = async () => {
     try {
-      const response = await axios.get(`${AuthenticUrl}/userInfo`, { withCredentials: true });
+      const response = await axios.get(`${AuthenticUrl}/userInfo`, { withCredentials: true }); // 쿠키 포함
       if (response.status === 200) {
         const data = response.data;
-        console.log('User info fetched:', data);
+        // console.log('User info fetched:', data); // 전송받은 데이터 콘솔에 찍어보기(보안상 없앰)
         setAuthenticated(true);
         setUserInfo(data); // Context에 사용자 정보 저장
       } else {
