@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 import './pages.css';
 
 const initialProducts = [
@@ -19,14 +20,13 @@ function HomePage() {
   const [products, setProducts] = useState(initialProducts);
   const [page, setPage] = useState(1);
   const { ref, inView } = useInView({
-    threshold: 1.0, // 스크롤이 100% 가려질 때 호출
-    triggerOnce: false, // 처음만 호출하지 않고, 계속 호출
+    threshold: 1.0,
+    triggerOnce: false,
   });
 
   const loadMoreProducts = useCallback(() => {
     if (!inView) return;
 
-    // 실제로는 API 요청을 통해 추가 데이터를 가져옵니다.
     const newProducts = [
       { id: 11, title: `상품 ${page * 10 + 1}`, price: '30,000원', imageUrl: 'https://via.placeholder.com/150' },
       { id: 12, title: `상품 ${page * 10 + 2}`, price: '40,000원', imageUrl: 'https://via.placeholder.com/150' },
@@ -48,11 +48,13 @@ function HomePage() {
       <div className="pages-title">전체 목록</div>
       <div className="product-grid">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.imageUrl} alt={product.title} className="product-image" />
-            <div className="product-title">{product.title}</div>
-            <div className="product-price">{product.price}</div>
-          </div>
+          <Link key={product.id} to={`/products/${product.id}`} className="product-link">
+            <div className="product-card">
+              <img src={product.imageUrl} alt={product.title} className="product-image" />
+              <div className="product-title">{product.title}</div>
+              <div className="product-price">{product.price}</div>
+            </div>
+          </Link>
         ))}
       </div>
       <div ref={ref} className="loading">Loading...</div>

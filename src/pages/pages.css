@@ -20,6 +20,11 @@
   gap: 5px; /* 카드 간의 간격 */
 }
 
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* 제품 카드 스타일링 */
 .product-card {
   padding: 5px;
@@ -31,10 +36,19 @@
   text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
+.product-card:hover {
+  background-color: #f9f9f9; /* 밝은 회색 배경색 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+
+
 /* 제품 이미지 스타일링 */
 .product-image {
-  width: 240px;
-  height: 240px;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
   object-fit: cover; /* 이미지를 카드에 맞추기 */
   border-radius: 5px;
 }
