@@ -26,12 +26,13 @@
 /* 사용자 정보 스타일 */
 .loginuser {
   font-family: 'Pretendard', sans-serif;
+  margin-right: 5px;
   font-size: 14px;
   font-weight: 600;
   color: #000000;
-  background-color: #c5c5c5;
+  background-color: #e8e8e8;
   border-radius: 30px;
-  padding: 2px 15px;
+  padding: 2px 10px;
 }
 
 /* 로그인,로그아웃 버튼 스타일 */

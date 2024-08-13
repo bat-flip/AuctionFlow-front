@@ -1,0 +1,62 @@
+/* pages.css */
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+/* font-family: 'Pretendard', sans-serif; */
+
+
+/* 전체 컨테이너 스타일링 */
+
+  /* 타이틀 스타일링 */
+  .pages-title {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin : 30px 2px 12px;
+    text-align: left; /* 좌측 정렬 */
+  }
+  
+  /* 제품 그리드 스타일링 */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5개 열로 구성 */
+    gap: 5px; /* 카드 간의 간격 */
+  }
+  
+  /* 제품 카드 스타일링 */
+  .product-card {
+    padding: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+  }
+  
+  /* 제품 이미지 스타일링 */
+  .product-image {
+    width: 240px;
+    height: 240px;
+    object-fit: cover; /* 이미지를 카드에 맞추기 */
+    border-radius: 5px;
+  }
+  
+  /* 제품 제목 스타일링 */
+  .product-title {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -0.3px;
+    color: #444444;
+    margin: 10px 4px 10px;
+  }
+  
+  /* 제품 가격 스타일링 */
+  .product-price {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin: 2px 6px;
+  }
+  

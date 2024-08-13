@@ -60,7 +60,7 @@ function PostPage() {
 
   return (
     <div className="post-page">
-      <div className="page-title">판매글 작성</div>
+      <div className="post-title">판매글 작성</div>
       <div className="form-group">
         <label>상품 이미지</label>
         <div className="PostImage-container" onClick={triggerImageInput}>
