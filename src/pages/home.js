@@ -4,7 +4,7 @@ import './pages.css'; // CSS 파일을 추가해 스타일링을 위한 클래�
 const products = [
   { id: 1, title: 'Nike x Drake Nocta NRG', price: '150,200원', imageUrl: 'https://via.placeholder.com/150' },
   { id: 2, title: 'Open Yy x Hello Kitty Shopper Tote Bag Silver', price: '98,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 3, title: 'Arcteryx Aerios 18 Backpack Black', price: '300,000원', imageUrl: 'https://via.placeholder.com/150' },
+  { id: 3, title: 'Arcteryx Aerios 18 Backpack Black', price: '30,000원', imageUrl: 'https://via.placeholder.com/150' },
   { id: 4, title: '상품 4', price: '40,000원', imageUrl: 'https://via.placeholder.com/150' },
   { id: 5, title: '상품 5', price: '50,000원', imageUrl: 'https://via.placeholder.com/150' },
   { id: 6, title: '상품 6', price: '60,000원', imageUrl: 'https://via.placeholder.com/150' },
