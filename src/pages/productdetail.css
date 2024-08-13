@@ -1,0 +1,184 @@
+/* Importing the Pretendard font */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+.product-detail-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 50px auto;
+}
+
+.product-detail-left {
+    flex: 0 1 400px; /* 기본 너비를 400px로 설정하고, 유연하게 줄어듦 */
+    padding-right: 40px;
+    border-right: 1px solid #e9e9e9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-detail-right {
+    flex: 1;
+    padding-left: 40px;
+    display: flex; /* Flexbox를 사용하여 자식 요소들을 정렬 */
+    flex-direction: column; /* 자식 요소들을 세로 방향으로 배치 */
+}
+
+
+.product-detail-image {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recent-price-container {
+    margin-top: 60px;
+    width: 100%;
+}
+
+.recent-price-header {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+
+.recent-price {
+    padding: 12px;
+    background-color: #e4ffeb; /* 조금 더 진한 초록색 계열 배경색 */
+    border: 1px solid #d6ecdc;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: #28A745; /* 초록색 계열 텍스트 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.pd-header-container {
+    display: flex; /* Flexbox를 사용하여 pd-name과 pd-category를 옆으로 배치 */
+    align-items: center; /* 수직으로 중앙 정렬 */
+    margin-bottom: 10px;
+}
+
+.pd-store {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.pd-name {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 22px;
+    color: #000000;
+    font-weight: 700;
+    margin-right: 20px; /* pd-category와의 간격 설정 */
+}
+
+.pd-category {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 14px;
+    background-color: #dcdcdc; /* 배경색 설정 */
+    color: rgb(0, 0, 0); /* 텍스트 색상 설정 */
+    padding: 6px 14px; /* 배경색을 텍스트 주위로 확장시키는 패딩 */
+    font-weight: 500;
+    border-radius: 30px; /* 선택 사항: 배경색을 둥글게 하기 위해 사용 */
+}
+
+.pd-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #28A745; /* 초록색 계열 가격 텍스트 */
+    border-bottom: 2px solid rgb(227, 227, 227);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.pd-condition,
+.pd-description {
+    margin-bottom: 25px;
+}
+
+.condition-label,
+.description-header {
+    font-weight: 600;
+    font-size: 18px;
+    color: #818181;
+    margin-bottom: 8px;
+}
+
+.condition-value {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.description-value {
+    font-size: 16px;
+    font-weight: 600;
+    background-color: none;
+    border-radius: 8px;
+    border: 1px solid rgb(220, 220, 220);
+    padding: 10px;
+    min-height: 200px;
+    margin-bottom: 50px;
+}
+
+.offer-title{
+    display: flex; /* Flexbox를 사용하여 pd-name과 pd-category를 옆으로 배치 */
+    align-items: center; /* 수직으로 중앙 정렬 */
+    margin-bottom: 10px;
+}
+
+.offer-header {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.offer-description {
+    font-weight: 400;
+    font-size: 14px;
+    color: #a1a1a1;
+}
+
+.offer-input {
+    display: flex; /* Flexbox를 사용하여 input과 button을 옆으로 배치 */
+    align-items: center; /* 수직으로 중앙 정렬 */
+    margin-bottom: 10px; /* 아래 여백 설정 */
+}
+
+.offer-value {
+    flex: 1; /* 입력 필드가 가능한 공간을 모두 차지하도록 설정 */
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-right: 10px; /* 버튼과의 간격 설정 */
+    box-sizing: border-box;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 15px;
+}
+
+.offer-value:focus {
+    border-color: #00c853;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 200, 83, 0.25);
+}
+
+.offer-button {
+    font-family: 'Pretendard', sans-serif;
+    padding: 10px 15px; /* 버튼의 수직 및 수평 패딩 설정 */
+    background-color: #28A745; /* 초록색 계열 버튼 */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.offer-button:hover {
+    background-color: #218838; /* 버튼 호버 시 진한 초록색 */
+}
+

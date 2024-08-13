@@ -14,7 +14,7 @@ const products = [
   { id: 10, title: '상품 10', price: '250,000원', imageUrl: 'https://via.placeholder.com/150' },
 ];
 
-function HomePage() {
+function SoldoutPage() {
   return (
     <div className="products-container">
       <div className="pages-title">판매 완료</div>
@@ -31,4 +31,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default SoldoutPage;
