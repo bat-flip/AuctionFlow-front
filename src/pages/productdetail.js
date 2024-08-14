@@ -9,7 +9,7 @@ function ProductDetailPage() {
   return (
     <div className="product-detail-container">
       <div className="product-detail-left">
-      <div className="pd-store"><FaRegUser />ㅎㅅㅎ 님의 상점</div>
+      <div className="pd-store"><FaRegUser />dlwnajr 님의 상점</div>
         <img
           src={`https://via.placeholder.com/150`}
           alt={`Product ${id}`}
