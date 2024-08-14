@@ -73,14 +73,14 @@ function SettingPage() {
         <div className="UserInfo">{userInfo ? `${userInfo.nickname}` : '로그인이 필요합니다.'}</div>
       </div>
       <div className="Store-section">
-        <div className="setting-title">상점 정보</div>
+        <div className="setting-title">내 상점 정보</div>
         <div className="StoreImage-container">
           <div className="StoreImage-wrapper">
             <div className="StoreImage">
               {storeImage ? (
                 <img src={storeImage} alt="Store" className="StoreImage-preview" />
               ) : (
-                '이미지칸'
+                '상점 이미지 등록'
               )}
             </div>
             <button className="StoreSet-button" onClick={triggerFileInput}>

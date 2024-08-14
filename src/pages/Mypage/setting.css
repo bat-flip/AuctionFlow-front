@@ -36,11 +36,11 @@
 .UserInfo {
   font-size: 16px;
   font-weight: 600;
-  padding: 10px;
+  padding: 8px 15px;
   margin-left: 10px;
   background-color: #eee;
   border-radius: 8px;
-  width: 15%;
+  display: inline-block;
 }
 
 .StoreImage-container {

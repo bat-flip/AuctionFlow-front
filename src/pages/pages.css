@@ -17,7 +17,7 @@
 .product-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 5개 열로 구성 */
-  gap: 5px; /* 카드 간의 간격 */
+  gap: 0px; /* 카드 간의 간격 */
 }
 
 .product-link {
@@ -46,9 +46,6 @@
 
 /* 제품 이미지 스타일링 */
 .product-image {
-  width: 100%;
-  max-width: 240px;
-  height: auto;
   object-fit: cover; /* 이미지를 카드에 맞추기 */
   border-radius: 5px;
 }
@@ -77,20 +74,11 @@
   .product-grid {
     grid-template-columns: repeat(4, 1fr); /* 4개 열로 변경 */
   }
-  .product-image {
-    width: 140px; /* 이미지 너비를 100%로 변경 */
-    height: 140px; /* 이미지 높이를 자동으로 조정 */
-  }
 }
 /* 화면 너비가 600px 이하일 때 */
 @media (max-width: 600px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr); /* 2개 열로 변경 */
-  }
-
-  .product-image {
-    width: 100px; /* 이미지 너비를 100%로 변경 */
-    height: 100px; /* 이미지 높이를 자동으로 조정 */
   }
 
   .product-title {
