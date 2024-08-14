@@ -5,13 +5,12 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: 50px auto;
+    margin: 25px auto;
 }
 
 .product-detail-left {
     flex: 0 1 400px; /* 기본 너비를 400px로 설정하고, 유연하게 줄어듦 */
-    padding-right: 40px;
-    border-right: 1px solid #e9e9e9;
+    padding-right: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,15 +18,16 @@
 
 .product-detail-right {
     flex: 1;
-    padding-left: 40px;
+    padding-left: 20px;
     display: flex; /* Flexbox를 사용하여 자식 요소들을 정렬 */
     flex-direction: column; /* 자식 요소들을 세로 방향으로 배치 */
 }
 
-
 .product-detail-image {
-    width: 100%;
-    max-width: 100%;
+    width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
+    height: auto; /* 이미지 비율을 유지한 채로 자동으로 높이를 설정 */
+    max-width: 400px; /* 원하는 최대 너비로 설정 (필요시) */
+    aspect-ratio: 1 / 1; /* 정사각형 비율을 설정 */
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
@@ -46,6 +46,7 @@
 
 .recent-price {
     padding: 12px;
+    letter-spacing: -0.5px;
     background-color: #e4ffeb; /* 조금 더 진한 초록색 계열 배경색 */
     border: 1px solid #d6ecdc;
     border-radius: 8px;
@@ -57,24 +58,58 @@
     margin-top: 10px;
 }
 
-.pd-header-container {
-    display: flex; /* Flexbox를 사용하여 pd-name과 pd-category를 옆으로 배치 */
-    align-items: center; /* 수직으로 중앙 정렬 */
-    margin-bottom: 10px;
+.recent-price-button-container {
+    display: flex;
+    justify-content: center; /* 버튼을 가로로 중앙 정렬 */
+    margin-top: 20px; /* 버튼과 위 요소 사이의 여백 조정 */
+}
+
+.recent-price-button {
+    font-family: 'Pretendard', sans-serif;
+    padding: 6px 30px; /* 버튼의 수직 및 수평 패딩 조정 */
+    background-color: transparent;
+    border: 1px solid #cfcfcf;
+    color: #000000;
+    border-radius: 8px; /* 버튼의 모서리를 둥글게 */
+    font-weight: 400; /* 글씨를 두껍게 */
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease; /* 호버 효과와 트랜스폼 추가 */
+}
+
+.recent-price-button:hover {
+    background-color:#ebebeb;
 }
 
 .pd-store {
     font-family: 'Pretendard', sans-serif;
+    margin-left: 10px;
     font-size: 16px;
     font-weight: 500;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    display: flex; /* Flexbox를 사용하여 아이콘과 텍스트를 정렬 */
+    align-items: center; /* 아이콘과 텍스트의 높이를 맞춤 */
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    width: 100%; /* 요소가 부모 컨테이너의 전체 너비를 차지하도록 설정 */
 }
+
+.pd-store svg {
+    margin-right: 5px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  }
+
+.pd-header-container {
+    display: flex; /* Flexbox를 사용하여 pd-name과 pd-category를 옆으로 배치 */
+    align-items: center; /* 수직으로 중앙 정렬 */
+    margin:30px 0px 10px;
+}
+
 
 .pd-name {
     font-family: 'Pretendard', sans-serif;
-    font-size: 22px;
+    font-size: 24px;
     color: #000000;
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: -0.5px;
     margin-right: 20px; /* pd-category와의 간격 설정 */
 }
 
@@ -88,13 +123,38 @@
     border-radius: 30px; /* 선택 사항: 배경색을 둥글게 하기 위해 사용 */
 }
 
+.pd-price-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 가격과 찜 버튼을 양 끝에 배치 */
+    border-bottom: 2px solid rgb(227, 227, 227);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
 .pd-price {
     font-size: 24px;
     font-weight: 700;
     color: #28A745; /* 초록색 계열 가격 텍스트 */
-    border-bottom: 2px solid rgb(227, 227, 227);
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+.wishlist-button {
+    font-family: 'Pretendard', sans-serif;
+    background-color: #fce4e4; /* 호버 시 연한 빨간색 배경 */
+    border: none;
+    color: #e74c3c; /* 빨간색 찜 버튼 */
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 3px 12px;
+    transition: background-color 0.3s ease;
+}
+
+.wishlist-button:hover {
+    background-color: #ffd6d6; /* 호버 시 연한 빨간색 배경 */
+    font-weight: 500;
 }
 
 .pd-condition,
@@ -146,11 +206,9 @@
 .offer-input {
     display: flex; /* Flexbox를 사용하여 input과 button을 옆으로 배치 */
     align-items: center; /* 수직으로 중앙 정렬 */
-    margin-bottom: 10px; /* 아래 여백 설정 */
 }
 
 .offer-value {
-    flex: 1; /* 입력 필드가 가능한 공간을 모두 차지하도록 설정 */
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -158,6 +216,7 @@
     box-sizing: border-box;
     font-family: 'Pretendard', sans-serif;
     font-size: 15px;
+    width: 50%;
 }
 
 .offer-value:focus {
@@ -168,11 +227,12 @@
 
 .offer-button {
     font-family: 'Pretendard', sans-serif;
-    padding: 10px 15px; /* 버튼의 수직 및 수평 패딩 설정 */
+    padding: 8px 25px; /* 버튼의 수직 및 수평 패딩 설정 */
     background-color: #28A745; /* 초록색 계열 버튼 */
     color: white;
     border: none;
     border-radius: 10px;
+    font-weight: 400;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
