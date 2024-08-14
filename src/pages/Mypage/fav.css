@@ -32,10 +32,8 @@
   text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
-/* 제품 이미지 스타일링 */
+
 .fav-image {
-  width: 225px;
-  height: 225px;
   object-fit: cover; /* 이미지를 카드에 맞추기 */
   border-radius: 5px;
 }
@@ -62,29 +60,14 @@
 /* 화면 너비가 1000px 이하일 때 */
 @media (max-width: 1000px) {
   .fav-grid {
-    grid-template-columns: repeat(4, 1fr); /* 4개 열로 변경 */
-  }
-  .fav-image {
-    width: 140px; /* 이미지 너비를 100%로 변경 */
-    height: 140px; /* 이미지 높이를 자동으로 조정 */
-  }
-}
-/* 화면 너비가 600px 이하일 때 */
-@media (max-width: 600px) {
-  .fav-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2개 열로 변경 */
-  }
-
-  .fav-image {
-    width: 100px; /* 이미지 너비를 100%로 변경 */
-    height: 100px; /* 이미지 높이를 자동으로 조정 */
+    grid-template-columns: repeat(2, 1fr); /* 4개 열로 변경 */
   }
 
   .fav-title {
-    font-size: 14px; /* 제목 폰트 사이즈 조정 */
+    font-size: 12px; /* 제목 폰트 사이즈 조정 */
   }
 
   .fav-price {
-    font-size: 16px; /* 가격 폰트 사이즈 조정 */
+    font-size: 14px; /* 가격 폰트 사이즈 조정 */
   }
 }
