@@ -48,7 +48,7 @@ function App() {
             </Route>
             <Route path="/post" element={<PostPage />} />
             <Route path="/products" element={<ProductPage />} />
-            <Route path="/products/:id" element={<ProductDetailPage />} />
+            <Route path="/products/:itemId" element={<ProductDetailPage />} />
             <Route path="/timeout" element={<TimeoutPage />} />
             <Route path="/soldout" element={<SoldoutPage />} />
           </Routes>

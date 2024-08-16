@@ -10,6 +10,8 @@ function PostPage() {
   const [price, setPrice] = useState('');
   const [endTime, setEndTime] = useState('');
   const [productImages, setProductImages] = useState([]); // 이미지 상태 관리
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const [error, setError] = useState(null); // 에러 상태
   const imageInputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -21,19 +23,15 @@ function PostPage() {
   const handleEndTimeChange = (e) => setEndTime(e.target.value);
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = [];
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        newImages.push({ id: Date.now() + Math.random(), src: reader.result }); // 고유 id 추가
-        if (newImages.length === files.length) {
-          setProductImages((prevImages) => [...prevImages, ...newImages]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    const files = Array.from(e.target.files); 
+    setProductImages((prevImages) => [
+      ...prevImages,
+      ...files.map((file) => ({
+        id: Date.now() + Math.random(),
+        file,
+        src: URL.createObjectURL(file)
+      }))
+    ]);
   };
 
   const triggerImageInput = () => {
@@ -41,22 +39,79 @@ function PostPage() {
   };
 
   const handleImageDelete = (id) => {
-    setProductImages((prevImages) => prevImages.filter((image) => image.id !== id));
+    setProductImages((prevImages) => {
+      const newImages = prevImages.filter((image) => image.id !== id);
+      // 삭제된 이미지의 URL 해제
+      const imageToDelete = prevImages.find((image) => image.id === id);
+      if (imageToDelete) {
+        URL.revokeObjectURL(imageToDelete.src);
+      }
+      return newImages;
+    });
   };
 
-  const handleSubmit = () => {
-    // 폼 제출 처리
-    console.log('상품명:', productName);
-    console.log('카테고리:', category);
-    console.log('상품 상태:', status);
-    console.log('설명:', description);
-    console.log('가격:', price);
-    console.log('종료 시간:', endTime);
-    console.log('이미지:', productImages);
-
-    // 폼 제출 후 이전 페이지로 돌아가기
-    navigate(-1);
+  const validateForm = () => {
+    if (!productName || !category || !status || !description || !price || !endTime) {
+      return false;
+    }
+    return true;
   };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      setError('모든 필드를 입력해주세요.');
+      return;
+    }
+  
+    setLoading(true);
+    setError(null);
+  
+    const formData = new FormData();
+  
+    // JSON 데이터 추가
+    formData.append('item', JSON.stringify({
+      categoryId: category === 'electronics' ? 1 : category === 'clothing' ? 2 : category === 'home' ? 3 : 4,
+      title: productName,
+      productStatus: status,
+      description: description,
+      startingBid: parseFloat(price),
+      auctionEndTime: endTime,
+      itemBidStatus: 'Active',
+    }));
+  
+    // 이미지 파일 추가
+    productImages.forEach((image) => {
+      formData.append('images', image.file); // images라는 키로 파일을 추가
+    });
+  
+    try {
+      const response = await fetch('http://localhost:8080/items', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include', // 세션 쿠키를 포함하여 요청
+      });
+  
+      if (response.ok) {
+        // 성공적으로 전송 후 폼 데이터 리셋
+        setProductName('');
+        setCategory('');
+        setStatus('');
+        setDescription('');
+        setPrice('');
+        setEndTime('');
+        setProductImages([]);
+        navigate(-1);
+      } else {
+        const errorText = await response.text(); // 서버에서 반환하는 에러 메시지 확인
+        throw new Error(errorText || '서버에서 응답을 받지 못했습니다.');
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   return (
     <div className="post-page">
@@ -124,8 +179,8 @@ function PostPage() {
             <input
               type="radio"
               name="status"
-              value="new"
-              checked={status === 'new'}
+              value="New"
+              checked={status === 'New'}
               onChange={handleStatusChange}
             />
             새 상품(미사용)
@@ -134,8 +189,8 @@ function PostPage() {
             <input
               type="radio"
               name="status"
-              value="used"
-              checked={status === 'used'}
+              value="Used"
+              checked={status === 'Used'}
               onChange={handleStatusChange}
             />
             사용감 없음
@@ -144,8 +199,8 @@ function PostPage() {
             <input
               type="radio"
               name="status"
-              value="refurbished"
-              checked={status === 'refurbished'}
+              value="Refurbished"
+              checked={status === 'Refurbished'}
               onChange={handleStatusChange}
             />
             사용감 적음
@@ -154,8 +209,8 @@ function PostPage() {
             <input
               type="radio"
               name="status"
-              value="damaged"
-              checked={status === 'damaged'}
+              value="Damaged"
+              checked={status === 'Damaged'}
               onChange={handleStatusChange}
             />
             사용감 많음
@@ -164,8 +219,8 @@ function PostPage() {
             <input
               type="radio"
               name="status"
-              value="other"
-              checked={status === 'other'}
+              value="Other"
+              checked={status === 'Other'}
               onChange={handleStatusChange}
             />
             고장/파손 상품
@@ -211,9 +266,17 @@ function PostPage() {
       </div>
       <div className="form-group">
         <div className="button-container">
-          <button className="post-button" onClick={handleSubmit}>등록하기</button>
+          <button 
+            className="post-button" 
+            onClick={handleSubmit}
+            disabled={loading} // 로딩 중에는 버튼 비활성화
+          >
+            {loading ? '등록 중...' : '등록하기'}
+          </button>
         </div>
       </div>
+      {/* 에러 메시지 */}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }

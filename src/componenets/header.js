@@ -30,7 +30,7 @@ function Header() {
       const response = await axios.get(`${AuthenticUrl}/userInfo`, { withCredentials: true }); // 쿠키 포함
       if (response.status === 200) {
         const data = response.data;
-        // console.log('User info fetched:', data); // 전송받은 데이터 콘솔에 찍어보기(보안상 없앰)
+        console.log('User info fetched:', data); // 전송받은 데이터 콘솔에 찍어보기(보안상 없앰)
         setAuthenticated(true);
         setUserInfo(data); // Context에 사용자 정보 저장
       } else {
