@@ -91,3 +91,9 @@ function ProductDetailPage() {
 }
 
 export default ProductDetailPage;
+
+
+//      <div className="pd-store"><FaRegUser />{product.userId}님의 상점</div> 이부분 nickname 가져오게 해야함
+// 관심상품에 추가 연결해야함
+// 이미지 관련 부분 해결
+//              <div className="pd-category">#{product.categoryId}</div> 카테고리ID 말고 name으로

@@ -118,9 +118,6 @@ function SettingPage() {
     }
   };
 
-  if (!userInfo) {
-    return <div>로그인 필요</div>;
-  }
 
   return (
     <div className="setting">
@@ -219,3 +216,10 @@ function SettingPage() {
 }
 
 export default SettingPage;
+
+
+// 일단 계좌 등록 부분 없앰
+// GET 관련해서 로그인한사람 과 상점 정보 주인 일치하는지,
+// 그렇게 해서 불러온다음에 null 값이면 POST고 null 값이 아니면 PATCH
+// 개별 수정으로도 할 수 있는지 해결해보기
+// 개별 수정이 안된다면 로그인을 한번 더 함으로써 인증이 필요할 것 같음

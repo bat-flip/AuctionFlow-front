@@ -1,22 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './pages.css';
 
-const products = [
-  { id: 1, title: 'Nike x Drake Nocta NRG', price: '150,200원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 2, title: 'Open Yy x Hello Kitty Shopper Tote Bag Silver', price: '98,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 3, title: 'Arcteryx Aerios 18 Backpack Black', price: '300,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 4, title: '상품 4', price: '40,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 5, title: '상품 5', price: '50,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 6, title: '상품 6', price: '60,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 7, title: '상품 7', price: '20,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 8, title: '상품 8', price: '20,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 9, title: '상품 9', price: '20,000원', imageUrl: 'https://via.placeholder.com/150' },
-  { id: 10, title: '상품 10', price: '250,000원', imageUrl: 'https://via.placeholder.com/150' },
-];
-
 function HomePage() {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);  // 상품 데이터를 저장할 상태
+
+  useEffect(() => {
+    // 백엔드 API 호출 (쿠키 포함)
+    fetch('http://localhost:8080/items', {
+      method: 'GET',
+      credentials: 'include',  // 쿠키를 포함하는 옵션
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const formattedProducts = data.map(item => ({
+          id: item.itemId,
+          title: item.title,
+          price: `${item.startingBid.toLocaleString()}원`,
+          imageUrl: item.productImageUrls[0] || 'https://via.placeholder.com/150',  // 첫 번째 이미지 사용
+        }));
+        setProducts(formattedProducts);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+  }, []);
 
   const handleCardClick = (id) => {
     navigate(`/products/${id}`);
