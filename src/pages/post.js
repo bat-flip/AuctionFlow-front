@@ -45,7 +45,7 @@ function PostPage() {
   };
 
   const formatDateTime = (dateTime) => {
-    if (dateTime.length === 16) { // Checks if seconds are missing
+    if (dateTime.length === 16) {
       return `${dateTime}:00`;
     }
     return dateTime;
