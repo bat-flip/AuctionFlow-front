@@ -8,22 +8,18 @@ function PostPage() {
   const [status, setStatus] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [productImages, setProductImages] = useState([]); // 이미지 상태 관리
-  const [loading, setLoading] = useState(false); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
+  const [endDate, setEndDate] = useState('');
+  const [endHour, setEndHour] = useState('');
+  const [endMinute, setEndMinute] = useState('');
+  const [productImages, setProductImages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const imageInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const handleProductNameChange = (e) => setProductName(e.target.value);
-  const handleCategoryChange = (e) => setCategory(e.target.value);
-  const handleStatusChange = (e) => setStatus(e.target.value);
-  const handleDescriptionChange = (e) => setDescription(e.target.value);
-  const handlePriceChange = (e) => setPrice(e.target.value);
-  const handleEndTimeChange = (e) => setEndTime(e.target.value);
+  const handleInputChange = (setter) => (e) => setter(e.target.value);
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files); 
+    const files = Array.from(e.target.files);
     setProductImages((prevImages) => [
       ...prevImages,
       ...files.map((file) => ({
@@ -34,14 +30,9 @@ function PostPage() {
     ]);
   };
 
-  const triggerImageInput = () => {
-    imageInputRef.current.click();
-  };
-
   const handleImageDelete = (id) => {
     setProductImages((prevImages) => {
       const newImages = prevImages.filter((image) => image.id !== id);
-      // 삭제된 이미지의 URL 해제
       const imageToDelete = prevImages.find((image) => image.id === id);
       if (imageToDelete) {
         URL.revokeObjectURL(imageToDelete.src);
@@ -51,74 +42,110 @@ function PostPage() {
   };
 
   const validateForm = () => {
-    if (!productName || !category || !status || !description || !price || !endTime) {
-      return false;
-    }
-    return true;
+    return productName && category && status && description && price && endDate && endHour && endMinute;
+  };
+
+  const formatDateTime = (date, hour, minute) => {
+    return `${date}T${hour}:${minute}:00`;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      setError('모든 필드를 입력해주세요.');
       return;
     }
   
     setLoading(true);
-    setError(null);
   
     const formData = new FormData();
   
-    // JSON 데이터 추가
     formData.append('item', JSON.stringify({
-      categoryId: category === 'electronics' ? 1 : category === 'clothing' ? 2 : category === 'home' ? 3 : 4,
+      categoryId: getCategoryID(category),
       title: productName,
       productStatus: status,
       description: description,
       startingBid: parseFloat(price),
-      auctionEndTime: endTime,
+      auctionEndTime: formatDateTime(endDate, endHour, endMinute),
       itemBidStatus: 'Active',
     }));
   
-    // 이미지 파일 추가
     productImages.forEach((image) => {
-      formData.append('images', image.file); // images라는 키로 파일을 추가
+      formData.append('images', image.file);
     });
   
     try {
       const response = await fetch('http://localhost:8080/items', {
         method: 'POST',
         body: formData,
-        credentials: 'include', // 세션 쿠키를 포함하여 요청
+        credentials: 'include',
       });
   
       if (response.ok) {
-        // 성공적으로 전송 후 폼 데이터 리셋
-        setProductName('');
-        setCategory('');
-        setStatus('');
-        setDescription('');
-        setPrice('');
-        setEndTime('');
-        setProductImages([]);
+        resetForm();
         navigate(-1);
-      } else {
-        const errorText = await response.text(); // 서버에서 반환하는 에러 메시지 확인
-        throw new Error(errorText || '서버에서 응답을 받지 못했습니다.');
       }
-    } catch (error) {
-      setError(error.message);
     } finally {
       setLoading(false);
     }
   };
-  
+
+  const resetForm = () => {
+    setProductName('');
+    setCategory('');
+    setStatus('');
+    setDescription('');
+    setPrice('');
+    setEndDate('');
+    setEndHour('');
+    setEndMinute('');
+    setProductImages([]);
+  };
+
+  const getCategoryID = (category) => {
+    switch (category) {
+      case 'clothing': return 1;
+      case 'fashion-accessories': return 2;
+      case 'electronics': return 3;
+      case 'sports-leisure': return 4;
+      case 'vehicles': return 5;
+      case 'star-goods': return 6;
+      case 'music-instruments': return 7;
+      case 'books-tickets-stationery': return 8;
+      case 'beauty': return 9;
+      case 'furniture-home': return 10;
+      case 'home-kitchen': return 11;
+      case 'tools-industrial': return 12;
+      case 'food': return 13;
+      case 'baby-kids': return 14;
+      case 'pet-supplies': return 15;
+      case 'others': return 16;
+      default: return 0;
+    }
+  };
+
+  const generateHourOptions = () => {
+    const hours = [];
+    for (let i = 0; i < 24; i++) {
+      const hour = i < 10 ? `0${i}` : i;
+      hours.push(hour);
+    }
+    return hours;
+  };
+
+  const generateMinuteOptions = () => {
+    const minutes = [];
+    for (let i = 0; i < 60; i++) {
+      const minute = i < 10 ? `0${i}` : i;
+      minutes.push(minute);
+    }
+    return minutes;
+  };
 
   return (
     <div className="post-page">
       <div className="post-title">판매글 작성</div>
       <div className="form-group">
         <label>상품 이미지</label>
-        <div className="PostImage-container" onClick={triggerImageInput}>
+        <div className="PostImage-container" onClick={() => imageInputRef.current.click()}>
           <div className="PostImage-message">
             이미지를<br/>등록해주세요.
           </div>
@@ -138,7 +165,7 @@ function PostPage() {
               <button
                 className="PostSubImage-delete"
                 onClick={() => handleImageDelete(image.id)}>
-                &times; { /*삭제 버튼 */}
+                &times;
               </button>
             </div>
           ))}
@@ -151,7 +178,7 @@ function PostPage() {
           type="text"
           id="product-name"
           value={productName}
-          onChange={handleProductNameChange}
+          onChange={handleInputChange(setProductName)}
           placeholder="상품명을 입력하세요."
         />
       </div>
@@ -161,70 +188,44 @@ function PostPage() {
         <select
           id="category"
           value={category}
-          onChange={handleCategoryChange}
+          class="options"
+          onChange={handleInputChange(setCategory)}
         >
           <option value="">선택하세요</option>
-          <option value="electronics">전자제품</option>
           <option value="clothing">의류</option>
-          <option value="home">가정용품</option>
-          <option value="appliances">가전제품</option>
-          {/* 다른 카테고리를 추가 */}
+          <option value="fashion-accessories">패션 액세서리</option>
+          <option value="electronics">전자기기</option>
+          <option value="sports-leisure">스포츠/레저</option>
+          <option value="vehicles">차량/오토바이</option>
+          <option value="star-goods">스타굿즈</option>
+          <option value="music-instruments">음반/악기</option>
+          <option value="books-tickets-stationery">도서/티켓/문구</option>
+          <option value="beauty">뷰티/미용</option>
+          <option value="furniture-home">가구/인테리어</option>
+          <option value="home-kitchen">생활/주방용품</option>
+          <option value="tools-industrial">공구/산업용품</option>
+          <option value="food">식품</option>
+          <option value="baby-kids">유아동/출산</option>
+          <option value="pet-supplies">반려동물 용품</option>
+          <option value="others">기타</option>
         </select>
       </div>
       <hr />
       <div className="form-group">
         <label>상품 상태</label>
         <div className="radio-group">
-          <label>
-            <input
-              type="radio"
-              name="status"
-              value="New"
-              checked={status === 'New'}
-              onChange={handleStatusChange}
-            />
-            새 상품(미사용)
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="status"
-              value="Used"
-              checked={status === 'Used'}
-              onChange={handleStatusChange}
-            />
-            사용감 없음
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="status"
-              value="Refurbished"
-              checked={status === 'Refurbished'}
-              onChange={handleStatusChange}
-            />
-            사용감 적음
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="status"
-              value="Damaged"
-              checked={status === 'Damaged'}
-              onChange={handleStatusChange}
-            />
-            사용감 많음
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="status"
-              value="Other"
-              checked={status === 'Other'}
-              onChange={handleStatusChange}
-            />
-            고장/파손 상품
-          </label>
+          {['새 상품(미개봉)', '사용감 없음', '사용감 적음', '사용감 많음', '고장 및 파손 상품'].map((value) => (
+            <label key={value}>
+              <input
+                type="radio"
+                name="status"
+                value={value}
+                checked={status === value}
+                onChange={handleInputChange(setStatus)}
+              />
+              {value}
+            </label>
+          ))}
         </div>
       </div>
       <hr />
@@ -233,7 +234,7 @@ function PostPage() {
         <textarea
           id="description"
           value={description}
-          onChange={handleDescriptionChange}
+          onChange={handleInputChange(setDescription)}
           placeholder="상품 상세 설명을 적어주세요."
         />
       </div>
@@ -244,7 +245,7 @@ function PostPage() {
           type="number"
           id="price"
           value={price}
-          onChange={handlePriceChange}
+          onChange={handleInputChange(setPrice)}
           placeholder="가격을 입력하세요."
           min="0"
         />
@@ -252,31 +253,60 @@ function PostPage() {
       </div>
       <hr />
       <div className="form-group">
-        <label>종료 시간</label>
-        <div className="time-settings">
-          <div>
-            <input
-              type="datetime-local"
-              id="end-time"
-              value={endTime}
-              onChange={handleEndTimeChange}
-            />
+          <label>종료 시간</label>
+          <div className="time-settings">
+            <div className="time-setting-group">
+              <input
+                className="options"
+                type="date"
+                id="end-date"
+                value={endDate}
+                onChange={handleInputChange(setEndDate)}
+              />
+            </div>
+            <div className="time-setting-group">
+              <select
+                id="end-hour"
+                className="options"
+                value={endHour}
+                onChange={handleInputChange(setEndHour)}
+              >
+                <option value="">시</option>
+                {generateHourOptions().map((hour) => (
+                  <option key={hour} value={hour}>
+                    {hour} 시
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="time-setting-group">
+              <select
+                id="end-minute"
+                className="options"
+                value={endMinute}
+                onChange={handleInputChange(setEndMinute)}
+              >
+                <option value="">분</option>
+                {generateMinuteOptions().map((minute) => (
+                  <option key={minute} value={minute}>
+                    {minute} 분
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
-      </div>
       <div className="form-group">
         <div className="button-container">
           <button 
             className="post-button" 
             onClick={handleSubmit}
-            disabled={loading} // 로딩 중에는 버튼 비활성화
+            disabled={loading}
           >
             {loading ? '등록 중...' : '등록하기'}
           </button>
         </div>
       </div>
-      {/* 에러 메시지 */}
-      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }

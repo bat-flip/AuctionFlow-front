@@ -1,45 +1,57 @@
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { useApp } from '../../context/AppContext';
 import './setting.css';
 
 function SettingPage() {
+  const { userInfo, storeData, setStoreData } = useApp();
   const [storeImage, setStoreImage] = useState(null);
   const [addressObj, setAddressObj] = useState({
-    postcode: '',
-    basicAddr: '',
-    detailAddr: ''
+    zipcode: '',
+    areaAddress: '',
+    townAddress: ''
   });
-  const [storeData, setStoreData] = useState({}); // 상점 데이터 초기화
-  const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태
-  const { userInfo } = useApp(); // 로그인한 사용자 정보
+  const [storeId, setStoreId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // 상점 정보 수정 상태
+  const [isAddressEditing, setIsAddressEditing] = useState(false); // 주소지 수정 상태
   const logoImgInput = useRef(null);
   const postcodeScriptUrl = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
 
   const open = useDaumPostcodePopup(postcodeScriptUrl);
 
   useEffect(() => {
-    if (userInfo) {
-      // 로그인한 사용자 ID를 기반으로 상점 데이터 로드
-      const loadStoreData = async () => {
-        try {
-          const response = await axios.get(`http://localhost:8080/mypage/store/${userInfo.id}`, { withCredentials: true });
-          setStoreData(response.data);
-          setStoreImage(response.data.image); // 초기 이미지 설정
-          setAddressObj({
-            postcode: response.data.address?.postcode || '',
-            basicAddr: response.data.address?.basicAddr || '',
-            detailAddr: response.data.address?.detailAddr || ''
-          }); // 초기 주소 설정
-        } catch (error) {
-          console.error('상점 데이터 로드 오류:', error);
-        }
-      };
+    const fetchStoreInfo = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/mypage/store/storeInfo', {
+          method: 'GET',
+          credentials: 'include'
+        });
 
-      loadStoreData();
-    }
-  }, [userInfo]);
+        if (!response.ok) {
+          throw new Error('상점 정보를 가져오는 데 실패했습니다.');
+        }
+
+        const data = await response.json();
+        setStoreId(data.storeId);
+        setStoreImage(data.storeImage);
+        setAddressObj({
+          zipcode: data.postcode,
+          areaAddress: data.basicAddr,
+          townAddress: data.detailAddr
+        });
+        setStoreData({
+          name: data.name,
+          content: data.content
+        });
+        setIsEditing(false);
+        setIsAddressEditing(false);
+      } catch (error) {
+        console.error('상점 정보를 가져오는 데 오류가 발생했습니다:', error);
+      }
+    };
+
+    fetchStoreInfo();
+  }, [setStoreData]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -52,82 +64,81 @@ function SettingPage() {
     }
   };
 
-  const triggerFileInput = () => {
-    logoImgInput.current.click();
-  };
-
   const handleComplete = (data) => {
-    setAddressObj({
-      postcode: data.zonecode,
-      basicAddr: `${data.sido} ${data.sigungu} ${data.address}`,
-      detailAddr: data.bname ? `${data.bname} ${data.buildingName || ''}`.trim() : data.buildingName || ''
-    });
+    let fullAddress = data.address;
+    let extraAddress = '';
+    let localAddress = data.sido + ' ' + data.sigungu;
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+      }
+      fullAddress = fullAddress.replace(localAddress, '');
+      setAddressObj({
+        zipcode: data.zonecode,
+        areaAddress: localAddress,
+        townAddress: fullAddress += (extraAddress !== '' ? `(${extraAddress})` : '')
+      });
+    }
   };
 
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };
 
-  const toggleEditing = () => {
-    setIsEditing(prev => !prev);
-  };
+  const handleSave = async () => {
+    const storeDTO = {
+      name: storeData.name,
+      content: storeData.content,
+      postcode: parseInt(addressObj.zipcode),
+      basicAddr: addressObj.areaAddress,
+      detailAddr: addressObj.townAddress
+    };
 
-  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/mypage/store', // 기본 URL
-    withCredentials: true,
-  });
-
-  const createStore = async (storeData) => {
     try {
-      const response = await axiosInstance.post('', storeData);
-      return response.data;
-    } catch (error) {
-      console.error('상점 생성 오류:', error);
-      throw error;
-    }
-  };
+      const response = storeId 
+        ? await fetch(`http://localhost:8080/mypage/store/${storeId}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(storeDTO)
+          })
+        : await fetch('http://localhost:8080/mypage/store', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(storeDTO)
+          });
 
-  const updateStore = async (storeId, storeData) => {
-    try {
-      const response = await axiosInstance.patch(`/${storeId}`, storeData);
-      return response.data;
-    } catch (error) {
-      console.error('상점 업데이트 오류:', error);
-      throw error;
-    }
-  };
-
-  const handleStoreSave = async () => {
-    try {
-      const storeDataToSave = {
-        name: document.getElementById('storeName').value,
-        content: document.getElementById('storeDescription').value,
-        postcode: addressObj.postcode,
-        basicAddr: addressObj.basicAddr,
-        detailAddr: addressObj.detailAddr,
-        image: storeImage
-      };
-      if (storeData.id) {
-        await updateStore(storeData.id, storeDataToSave); // 기존 상점 업데이트
-      } else {
-        await createStore(storeDataToSave); // 새로운 상점 생성
+      if (!response.ok) {
+        throw new Error('상점 정보를 저장하는 데 실패했습니다.');
       }
-      alert('상점 정보가 저장되었습니다.');
+
+      const data = await response.json();
+      console.log('상점이 저장되었습니다:', data);
+      setStoreId(data.storeId); // 새로 등록한 경우, ID를 업데이트
+      setIsEditing(false);
+      setIsAddressEditing(false);
     } catch (error) {
-      alert('상점 정보 저장에 실패했습니다.');
+      console.error('상점 저장에 오류가 발생했습니다:', error);
     }
   };
-
-  if (!userInfo) {
-    return <div>로그인 필요</div>;
-  }
 
   return (
     <div className="setting">
-      <div className="setting-header">내 정보 / 상점 관리</div>
+      <div className="setting-header">내 정보/상점 관리</div>
       <div className="User-section">
         <div className="setting-title">내 정보</div>
-        <div className="UserInfo">{userInfo ? `${userInfo.nickname}` : '로그인이 필요합니다.'}</div>
+        <div className="UserInfo">
+          {userInfo ? `${userInfo.nickname}` : '로그인이 필요합니다.'}
+        </div>
       </div>
       <div className="Store-section">
         <div className="setting-title">상점 정보</div>
@@ -140,80 +151,81 @@ function SettingPage() {
                 '이미지칸'
               )}
             </div>
-            {isEditing && (
-              <>
-                <button className="StoreSet-button" onClick={triggerFileInput}>
-                  이미지 변경
-                </button>
-                <input
-                  ref={logoImgInput}
-                  type="file"
-                  accept="image/*"
-                  className="StoreImage-input"
-                  onChange={handleImageChange}
-                />
-              </>
-            )}
+            <input
+              ref={logoImgInput}
+              type="file"
+              accept="image/*"
+              className="StoreImage-input"
+              onChange={handleImageChange}
+            />
           </div>
           <div className="Store-info">
             <div className="setting-subtitle">상점 이름</div>
-            <input
-              id="storeName"
-              type="text"
-              placeholder="상점 이름을 설정해주세요."
-              disabled={!isEditing}
-              defaultValue={storeData.name || ''} // 저장된 값으로 수정
-            />
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="상점 이름을 설정해주세요."
+                value={storeData.name || ''}
+                onChange={(e) => setStoreData(prev => ({ ...prev, name: e.target.value }))}
+                disabled={!isEditing}
+              />
+            </div>
             <div className="setting-subtitle">상점 소개</div>
-            <input
-              id="storeDescription"
-              type="text"
-              placeholder="상점 소개를 입력해주세요."
-              disabled={!isEditing}
-              defaultValue={storeData.content || ''} // 저장된 값으로 수정
-            />
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder="상점 소개를 입력해주세요."
+                value={storeData.content || ''}
+                onChange={(e) => setStoreData(prev => ({ ...prev, content: e.target.value }))}
+                disabled={!isEditing}
+              />
+            </div>
           </div>
         </div>
       </div>
       <div className="Info-section">
         <div className="setting-title">주소지 정보</div>
-        <input
-          type="text"
-          className="zipcode-input"
-          placeholder="우편번호"
-          value={addressObj.postcode}
-          readOnly
-        />
-        <button className="StoreSet-button" onClick={handleClick}>주소 찾기</button>
-        <input
-          type="text"
-          placeholder="기본 주소를 입력해주세요."
-          value={addressObj.basicAddr}
-          readOnly
-        />
-        <input
-          type="text"
-          placeholder="상세 주소를 입력해주세요."
-          value={addressObj.detailAddr}
-          onChange={(e) => setAddressObj(prev => ({ ...prev, detailAddr: e.target.value }))}
-          disabled={!isEditing}
-        />
+          <div className="input-wrapper">
+            <input
+              type="text"
+              className="zipcode-input"
+              placeholder="우편번호"
+              value={addressObj.zipcode}
+              readOnly
+            />
+            {isAddressEditing && (
+              <button className="StoreSet-button" onClick={handleClick}>주소 찾기</button>
+            )}
+          </div>
+          <input
+            type="text"
+            placeholder="주소를 입력해주세요."
+            value={addressObj.areaAddress}
+            onChange={(e) => setAddressObj(prev => ({ ...prev, areaAddress: e.target.value }))}
+            disabled={!isAddressEditing}
+          />
+          <input
+            type="text"
+            placeholder="상세 주소를 입력해주세요."
+            value={addressObj.townAddress}
+            onChange={(e) => setAddressObj(prev => ({ ...prev, townAddress: e.target.value }))}
+            disabled={!isAddressEditing}
+          />
+        </div>
+      <div className="setting-footer">
+        <button
+          className={isEditing || isAddressEditing ? 'StoreSet-button2OK' : 'StoreSet-button2'}
+          onClick={() => {
+            if (isEditing || isAddressEditing) {
+              handleSave();
+            }
+            setIsEditing(!isEditing);
+            setIsAddressEditing(!isAddressEditing);
+          }}
+        >
+          {isEditing || isAddressEditing ? '저장' : '수정'}
+        </button>
       </div>
-      {/* <div className="Info-section2">
-        <div className="setting-title">계좌 정보</div>
-        <input
-          type="text"
-          placeholder="계좌 정보를 입력해주세요."
-          disabled={!isEditing}
-          defaultValue={storeData.account || ''} // 저장된 값으로 수정
-        />
-      </div> */}
-      <button className="StoreSet-button" onClick={toggleEditing}>
-        {isEditing ? '수정 취소' : '수정하기'}
-      </button>
-      {isEditing && (
-        <button className="StoreSet-button" onClick={handleStoreSave}>저장</button>
-      )}
     </div>
   );
 }
