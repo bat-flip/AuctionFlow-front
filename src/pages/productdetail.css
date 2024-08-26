@@ -116,7 +116,7 @@
     font-family: 'Pretendard', sans-serif;
     font-size: 14px;
     background-color: #dcdcdc; /* 배경색 설정 */
-    color: rgb(0, 0, 0); /* 텍스트 색상 설정 */
+    color: rgb(107, 107, 107); /* 텍스트 색상 설정 */
     padding: 6px 14px; /* 배경색을 텍스트 주위로 확장시키는 패딩 */
     font-weight: 500;
     border-radius: 30px; /* 선택 사항: 배경색을 둥글게 하기 위해 사용 */

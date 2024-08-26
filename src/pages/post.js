@@ -8,10 +8,11 @@ function PostPage() {
   const [status, setStatus] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [endHour, setEndHour] = useState('');
+  const [endMinute, setEndMinute] = useState('');
   const [productImages, setProductImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const imageInputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -41,24 +42,19 @@ function PostPage() {
   };
 
   const validateForm = () => {
-    return productName && category && status && description && price && endTime;
+    return productName && category && status && description && price && endDate && endHour && endMinute;
   };
 
-  const formatDateTime = (dateTime) => {
-    if (dateTime.length === 16) {
-      return `${dateTime}:00`;
-    }
-    return dateTime;
+  const formatDateTime = (date, hour, minute) => {
+    return `${date}T${hour}:${minute}:00`;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      setError('모든 필드를 입력해주세요.');
       return;
     }
   
     setLoading(true);
-    setError(null);
   
     const formData = new FormData();
   
@@ -68,7 +64,7 @@ function PostPage() {
       productStatus: status,
       description: description,
       startingBid: parseFloat(price),
-      auctionEndTime: formatDateTime(endTime),
+      auctionEndTime: formatDateTime(endDate, endHour, endMinute),
       itemBidStatus: 'Active',
     }));
   
@@ -86,12 +82,7 @@ function PostPage() {
       if (response.ok) {
         resetForm();
         navigate(-1);
-      } else {
-        const errorText = await response.text();
-        throw new Error(errorText || '서버에서 응답을 받지 못했습니다.');
       }
-    } catch (error) {
-      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -103,18 +94,50 @@ function PostPage() {
     setStatus('');
     setDescription('');
     setPrice('');
-    setEndTime('');
+    setEndDate('');
+    setEndHour('');
+    setEndMinute('');
     setProductImages([]);
   };
 
   const getCategoryID = (category) => {
     switch (category) {
-      case 'electronics': return 1;
-      case 'clothing': return 2;
-      case 'home': return 3;
-      case 'appliances': return 4;
+      case 'clothing': return 1;
+      case 'fashion-accessories': return 2;
+      case 'electronics': return 3;
+      case 'sports-leisure': return 4;
+      case 'vehicles': return 5;
+      case 'star-goods': return 6;
+      case 'music-instruments': return 7;
+      case 'books-tickets-stationery': return 8;
+      case 'beauty': return 9;
+      case 'furniture-home': return 10;
+      case 'home-kitchen': return 11;
+      case 'tools-industrial': return 12;
+      case 'food': return 13;
+      case 'baby-kids': return 14;
+      case 'pet-supplies': return 15;
+      case 'others': return 16;
       default: return 0;
     }
+  };
+
+  const generateHourOptions = () => {
+    const hours = [];
+    for (let i = 0; i < 24; i++) {
+      const hour = i < 10 ? `0${i}` : i;
+      hours.push(hour);
+    }
+    return hours;
+  };
+
+  const generateMinuteOptions = () => {
+    const minutes = [];
+    for (let i = 0; i < 60; i++) {
+      const minute = i < 10 ? `0${i}` : i;
+      minutes.push(minute);
+    }
+    return minutes;
   };
 
   return (
@@ -165,13 +188,26 @@ function PostPage() {
         <select
           id="category"
           value={category}
+          class="options"
           onChange={handleInputChange(setCategory)}
         >
           <option value="">선택하세요</option>
-          <option value="electronics">전자제품</option>
           <option value="clothing">의류</option>
-          <option value="home">가정용품</option>
-          <option value="appliances">가전제품</option>
+          <option value="fashion-accessories">패션 액세서리</option>
+          <option value="electronics">전자기기</option>
+          <option value="sports-leisure">스포츠/레저</option>
+          <option value="vehicles">차량/오토바이</option>
+          <option value="star-goods">스타굿즈</option>
+          <option value="music-instruments">음반/악기</option>
+          <option value="books-tickets-stationery">도서/티켓/문구</option>
+          <option value="beauty">뷰티/미용</option>
+          <option value="furniture-home">가구/인테리어</option>
+          <option value="home-kitchen">생활/주방용품</option>
+          <option value="tools-industrial">공구/산업용품</option>
+          <option value="food">식품</option>
+          <option value="baby-kids">유아동/출산</option>
+          <option value="pet-supplies">반려동물 용품</option>
+          <option value="others">기타</option>
         </select>
       </div>
       <hr />
@@ -217,18 +253,49 @@ function PostPage() {
       </div>
       <hr />
       <div className="form-group">
-        <label>종료 시간</label>
-        <div className="time-settings">
-          <div>
-            <input
-              type="datetime-local"
-              id="end-time"
-              value={endTime}
-              onChange={handleInputChange(setEndTime)}
-            />
+          <label>종료 시간</label>
+          <div className="time-settings">
+            <div className="time-setting-group">
+              <input
+                className="options"
+                type="date"
+                id="end-date"
+                value={endDate}
+                onChange={handleInputChange(setEndDate)}
+              />
+            </div>
+            <div className="time-setting-group">
+              <select
+                id="end-hour"
+                className="options"
+                value={endHour}
+                onChange={handleInputChange(setEndHour)}
+              >
+                <option value="">시</option>
+                {generateHourOptions().map((hour) => (
+                  <option key={hour} value={hour}>
+                    {hour} 시
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="time-setting-group">
+              <select
+                id="end-minute"
+                className="options"
+                value={endMinute}
+                onChange={handleInputChange(setEndMinute)}
+              >
+                <option value="">분</option>
+                {generateMinuteOptions().map((minute) => (
+                  <option key={minute} value={minute}>
+                    {minute} 분
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
-      </div>
       <div className="form-group">
         <div className="button-container">
           <button 
@@ -240,7 +307,6 @@ function PostPage() {
           </button>
         </div>
       </div>
-      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }

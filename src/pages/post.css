@@ -1,15 +1,14 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
 
-/* font-family: 'Pretendard', sans-serif; */
-
+/* 기본 폰트 설정 */
 .post-page {
     max-width: 70%;
     padding: 25px;
     margin: 0 auto;
     font-family: 'Pretendard', sans-serif;
-  }
-  
-  .post-title {
+}
+
+.post-title {
     font-size: 22px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -17,13 +16,13 @@
     margin-bottom: 20px; /* 제목과 다음 요소 간의 간격 */
     padding-bottom: 5px; /* 제목과 border-bottom 사이의 간격 */
     border-bottom: 3px solid #000000;
-  }
+}
 
-  .form-group {
+.form-group {
     margin-bottom: 20px;
-  }
-  
-  .form-group label {
+}
+
+.form-group label {
     display: block;
     font-size: 16px;
     margin-bottom: 8px;
@@ -31,75 +30,73 @@
     font-family: 'Pretendard', sans-serif;
     font-weight: 600;
     letter-spacing: 1px;
-  }
+}
 
 .PostImage-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  height: 150px;
-  justify-content: center;
-  background-color: #f9f9f9;
-  border: 2px dashed #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-  position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    background-color: #f9f9f9;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    position: relative;
 }
 
 .PostImage-container:hover {
-  border-color: #00c853;
+    border-color: #00c853;
 }
 
 .PostImage-message {
-  font-family: 'Pretendard', sans-serif;
-  color: #777;
-  text-align: center;
+    font-family: 'Pretendard', sans-serif;
+    color: #777;
+    text-align: center;
 }
 
 .PostSubImage {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .PostSubImage-item {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .PostSubImage-img {
-  width: 120px; /* 이미지 크기 조정 */
-  height: 120px;
-  object-fit: cover;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+    width: 120px; /* 이미지 크기 조정 */
+    height: 120px;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
 }
 
 .PostSubImage-delete {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .image-input {
-  display: none;
+    display: none;
 }
 
-/* 텍스트 입력 필드 */
 .form-group input[type="text"] {
     width: 50%;
     padding: 10px;
@@ -108,10 +105,9 @@
     box-sizing: border-box;
     margin-bottom: 10px;
     font-family: 'Pretendard', sans-serif;
-  }
-  
-  /* 숫자 입력 필드 */
-  .form-group input[type="number"] {
+}
+
+.form-group input[type="number"] {
     width: 30%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -119,10 +115,9 @@
     margin-bottom: 10px;
     box-sizing: border-box;
     font-family: 'Pretendard', sans-serif;
-  }
-  
-  /* 선택 박스 (드롭다운) */
-  .form-group select {
+}
+
+.form-group select {
     width: 30%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -130,10 +125,9 @@
     box-sizing: border-box;
     margin-bottom: 10px;
     font-family: 'Pretendard', sans-serif;
-  }
-  
-  /* 텍스트 영역 (textarea) */
-  .form-group textarea {
+}
+
+.form-group textarea {
     width: 90%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -143,101 +137,105 @@
     height: 200px; /* 기본 높이 설정 */
     font-family: 'Pretendard', sans-serif;
     resize: none;
-  }
-  
-  
-  .form-group input[type="text"]:focus,
-  .form-group input[type="number"]:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: #00c853;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 200, 83, 0.25);
-  }
-  
-  .radio-group label {
+}
+
+.radio-group label {
     font-family: 'Pretendard', sans-serif;
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
     font-weight: 400;
     color: #555;
-  }
-  
-  .radio-group input[type="radio"] {
+}
+
+.radio-group input[type="radio"] {
     font-family: 'Pretendard', sans-serif;
     margin-right: 10px;
-  }
-  
-  .small {
+}
+
+.options {
     font-family: 'Pretendard', sans-serif;
     display: block;
-    margin-top: 8px;
     font-size: 14px;
-    color: #777;
-  }
-  
-  .time-settings {
+    color: #555;
+}
+
+.time-settings {
     display: flex;
-    justify-content: space-between;
-  }
-  
-  .time-settings div {
-    flex: 1;
-    margin-right: 10px;
-  }
-  
-  .time-settings label {
+    gap: 20px; /* 요소들 사이의 간격 조정 */
+    margin-top: 10px;
+}
+
+.time-settings label {
     display: block;
     font-size: 16px;
     margin-bottom: 8px;
     color: #555;
-  }
-  
-  .time-settings input[type="datetime-local"] {
-    font-family: 'Pretendard', sans-serif;
-    width: 50%;
+}
+
+.time-settings input[type="date"] {
+    width: 100%; /* 날짜 입력 필드의 너비는 100%로 유지 */
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-sizing: border-box;
-    margin-bottom: 10px; /* 요소들 사이의 간격 조정 */
+    margin-bottom: 10px;
     font-family: 'Pretendard', sans-serif;
-  }
+}
 
-  .time-settings input[type="datetime-local"]:focus {
+
+.time-settings select {
+    width: 100%; /* 기본 너비보다 작게 설정 */
+    max-width: 100px; /* 최대 너비 설정 */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.time-settings input[type="date"]:focus,
+.time-settings select:focus {
     border-color: #00c853;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 200, 83, 0.25);
-  }
-  
-  hr {
+}
+
+hr {
     border: 1px solid #eeeeee;
     margin: 20px 0;
-  }
+}
 
-/* 기존 CSS */
 .post-button {
-  font-family: 'Pretendard', sans-serif;
-  padding: 12px 50px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #000000;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  text-align: center;
-  box-sizing: border-box;
-  transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    font-family: 'Pretendard', sans-serif;
+    padding: 12px 50px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #000000;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
 }
 
 .post-button:hover {
-  background-color: #1c1c1c;
+    background-color: #1c1c1c;
 }
 
-/* 버튼 컨테이너를 중앙에 정렬하기 */
 .button-container {
-  display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
-  margin-top: 30px; /* 버튼과 상단 요소 사이의 간격 조정 */
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    margin-top: 30px; /* 버튼과 상단 요소 사이의 간격 조정 */
 }

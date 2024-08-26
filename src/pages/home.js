@@ -14,7 +14,7 @@ function HomePage() {
     })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('네트워크가 응답하지 않습니다.');
         }
         return response.json();
       })
@@ -27,7 +27,7 @@ function HomePage() {
         }));
         setProducts(formattedProducts);
       })
-      .catch(error => console.error('Error fetching products:', error));
+      .catch(error => console.error('상품을 불러오는데 오류가 발생했습니다.:', error));
   }, []);
 
   const handleCardClick = (id) => {
