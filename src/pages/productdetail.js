@@ -107,6 +107,25 @@ function ProductDetailPage() {
     });
   };
 
+  const handleAddToWishlist = async () => {
+    try {
+      await axios.post(
+        `http://localhost:8080/mypage/like`,
+        { itemId }, // 데이터 본문에 itemId를 포함
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json', // 요청 본문 형식 설정
+          },
+        }
+      );
+      alert('관심 상품에 추가되었습니다.');
+    } catch (error) {
+      alert(error.response?.data || '관심 상품 추가에 실패했습니다.');
+    }
+  };
+
+
   if (loading || error || !product) {
     return (
       <div>
@@ -161,7 +180,7 @@ function ProductDetailPage() {
         </div>
         <div className="pd-price-container">
           <div className="pd-price">{product.startingBid.toLocaleString()}원</div>
-          <button className="wishlist-button">관심 상품에 추가</button>
+          <button className="wishlist-button" onClick={handleAddToWishlist}>관심 상품에 추가</button>
         </div>
         <div className="pd-condition">
           <div className="condition-label">상품 상태</div>
