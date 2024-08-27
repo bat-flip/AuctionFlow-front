@@ -65,7 +65,7 @@ function PostPage() {
       description: description,
       startingBid: parseFloat(price),
       auctionEndTime: formatDateTime(endDate, endHour, endMinute),
-      itemBidStatus: 'Active',
+      itemBidStatus: 'active',
     }));
   
     productImages.forEach((image) => {

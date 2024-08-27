@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaRegUser } from "react-icons/fa";
 import axios from 'axios';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import './productdetail.css';
 
 function ProductDetailPage() {
@@ -10,6 +12,7 @@ function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [bidAmount, setBidAmount] = useState('');
+  const [bids, setBids] = useState([]);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -19,13 +22,32 @@ function ProductDetailPage() {
         });
         setProduct(response.data);
       } catch (error) {
-        setError('상품 정보가 존재 하지 않습니다');
+        setError('상품 정보가 존재하지 않습니다');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProductDetails();
+  }, [itemId]);
+
+  useEffect(() => {
+    const socket = new SockJS('http://localhost:8080/ws');
+    const client = new Client({
+      webSocketFactory: () => socket,
+      onConnect: () => {
+        client.subscribe(`/topic/auction/${itemId}`, (message) => {
+          const bid = JSON.parse(message.body);
+          setBids((prevBids) => [...prevBids, bid]);
+        });
+      },
+    });
+
+    client.activate();
+
+    return () => {
+      client.deactivate();
+    };
   }, [itemId]);
 
   const handleBidSubmit = async () => {
@@ -66,8 +88,14 @@ function ProductDetailPage() {
           className="product-detail-image"
         />
         <div className="recent-price-container">
-          <div className="recent-price-header">최근 제시가</div>
-          <div className="recent-price">100,000원</div>
+        <div className="recent-price-header">최근 제시가</div>
+          {bids.length > 0 ? (
+            <div className="recent-price">
+              {bids[bids.length - 1].bidAmount.toLocaleString()}원
+            </div>
+          ) : (
+            <div className="recent-price">입찰이 없습니다</div>
+          )}
           <div className="recent-price-button-container">
             <button className="recent-price-button">제시가 더보기</button>
           </div>
