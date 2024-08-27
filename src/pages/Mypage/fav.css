@@ -17,7 +17,8 @@
 /* 제품 그리드 스타일링 */
 .fav-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 5개 열로 구성 */
+  grid-template-columns: repeat(4, 1fr); /* 4개 열로 구성 */
+  gap: 20px; /* 카드 간의 간격 */
 }
 
 /* 제품 카드 스타일링 */
@@ -29,11 +30,14 @@
   display: flex;
   flex-direction: column;
   text-align: left; /* 텍스트 왼쪽 정렬 */
+  text-decoration: none; /* 링크 밑줄 제거 */
+  color: inherit; /* 링크 색상 상속 */
 }
 
-
 .fav-image {
-  object-fit: cover; /* 이미지를 카드에 맞추기 */
+  width: 100%; /* 카드의 너비에 맞게 조정 */
+  height: 200px; /* 원하는 높이 설정 */
+  object-fit: contain; /* 이미지가 카드에 맞게 잘리도록 설정 */
   border-radius: 5px;
 }
 
@@ -59,7 +63,7 @@
 /* 화면 너비가 1000px 이하일 때 */
 @media (max-width: 1000px) {
   .fav-grid {
-    grid-template-columns: repeat(2, 1fr); /* 4개 열로 변경 */
+    grid-template-columns: repeat(2, 1fr); /* 2개 열로 변경 */
   }
 
   .fav-title {

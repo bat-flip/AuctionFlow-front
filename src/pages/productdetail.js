@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaRegUser } from 'react-icons/fa';
+import { FaRegUser } from "react-icons/fa";
 import axios from 'axios';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -12,88 +12,109 @@ function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [bidAmount, setBidAmount] = useState('');
-  const [bidHistory, setBidHistory] = useState([]);
+  const [bids, setBids] = useState([]);
+  const [displayedBids, setDisplayedBids] = useState([]);
+  const [page, setPage] = useState(0); // Track current page
+  const [hasMoreBids, setHasMoreBids] = useState(true); // Check if there are more bids to load
 
+  const BIDS_PER_PAGE = 5; // Number of bids to display per page
+
+  // 상품 정보 가져오기
   useEffect(() => {
-    // 상품 상세 정보와 입찰 내역을 가져오는 함수
-    const fetchProductDetailsAndBids = async () => {
+    const fetchProductDetails = async () => {
       try {
-        // 상품 상세 정보 가져오기
-        const productResponse = await axios.get(`http://localhost:8080/items/${itemId}`, {
+        const response = await axios.get(`http://localhost:8080/items/${itemId}`, {
           withCredentials: true,
         });
-        setProduct(productResponse.data);
-
-        // 입찰 내역 가져오기
-        const bidsResponse = await axios.get(`http://localhost:8080/auction/bids/${itemId}`, {
-          withCredentials: true,
-        });
-        setBidHistory(bidsResponse.data);
-
+        setProduct(response.data);
       } catch (error) {
-        setError('상품 정보나 입찰 정보가 존재하지 않습니다.');
+        setError('상품 정보가 존재하지 않습니다');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProductDetailsAndBids();
+    fetchProductDetails();
+  }, [itemId]);
 
-    // WebSocket 연결 설정
+  // 입찰 내역 가져오기 및 WebSocket 설정
+  useEffect(() => {
+    const fetchBids = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/auction/bids/${itemId}`, {
+          withCredentials: true,
+        });
+
+        // Assume the bids have a 'bidTime' field
+        const sortedBids = response.data.sort((a, b) => new Date(b['bidTime']) - new Date(a['bidTime']));
+        setBids(sortedBids);
+        setDisplayedBids(sortedBids.slice(0, BIDS_PER_PAGE)); // Initialize with first page
+        setHasMoreBids(sortedBids.length > BIDS_PER_PAGE); // Check if there are more bids
+      } catch (error) {
+        console.error('Failed to fetch bids:', error);
+      }
+    };
+
+    fetchBids();
+
     const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client({
       webSocketFactory: () => socket,
-      connectHeaders: {},
-      debug: (str) => {
-        console.log(str);
-      },
       onConnect: () => {
-        console.log('WebSocket에 연결되었습니다.');
         client.subscribe(`/topic/auction/${itemId}`, (message) => {
-          const bidNotification = JSON.parse(message.body);
-          setBidHistory((prevBids) => [...prevBids, bidNotification]);
+          const bid = JSON.parse(message.body);
+          setBids((prevBids) => {
+            const updatedBids = [bid, ...prevBids].sort((a, b) => new Date(b['bidTime']) - new Date(a['bidTime']));
+            setDisplayedBids(updatedBids.slice(0, (page + 1) * BIDS_PER_PAGE)); // Update displayed bids based on page
+            setBids(updatedBids); // Update all bids state
+            return updatedBids;
+          });
         });
       },
       onStompError: (frame) => {
-        console.error('브로커 오류:', frame.headers.message);
-        console.error('추가 세부 사항:', frame.body);
+        console.error('STOMP error', frame);
       },
     });
+
     client.activate();
 
     return () => {
       client.deactivate();
     };
-  }, [itemId]);
+  }, [itemId, page]);
 
   const handleBidSubmit = async () => {
-    if (!bidAmount || isNaN(bidAmount) || bidAmount <= 0) {
-      alert('올바른 입찰 금액을 입력해주세요.');
-      return;
-    }
-
     try {
       await axios.post(`http://localhost:8080/auction/bid`, null, {
         params: { itemId, bidAmount },
         withCredentials: true,
       });
-      alert('입찰이 성공적으로 완료되었습니다.');
-      setBidAmount(''); // 성공적으로 입찰 후 입력 필드 초기화
+      alert("입찰이 성공적으로 완료되었습니다.");
     } catch (error) {
-      alert(error.response?.data || '입찰에 실패했습니다.');
+      alert(error.response?.data || "입찰에 실패했습니다.");
     }
   };
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
+  const loadMoreBids = () => {
+    setPage((prevPage) => {
+      const newPage = prevPage + 1;
+      const newDisplayCount = newPage * BIDS_PER_PAGE;
+      const nextBids = bids.slice(0, newDisplayCount);
+      
+      setDisplayedBids(nextBids);
+      setHasMoreBids(bids.length > newDisplayCount);
+      return newPage;
+    });
+  };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!product) {
-    return <div>상품을 찾을 수 없습니다.</div>;
+  if (loading || error || !product) {
+    return (
+      <div>
+        {loading && <div>Loading...</div>}
+        {error && <div>{error}</div>}
+        {!loading && !error && !product && <div>상품을 찾을 수 없습니다.</div>}
+      </div>
+    );
   }
 
   const imageUrl = product.productImageUrls && product.productImageUrls.length > 0
@@ -113,22 +134,24 @@ function ProductDetailPage() {
         />
         <div className="recent-price-container">
           <div className="recent-price-header">최근 제시가</div>
-          <div className="recent-price">
-            {bidHistory.length > 0 ? (
-              <ul>
-                {bidHistory.map(bid => (
-                  <li key={bid.bidId}>
-                    {bid.bidAmount.toLocaleString()}원
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              '없음'
-            )}
-          </div>
-          <div className="recent-price-button-container">
-            <button className="recent-price-button">제시가 더보기</button>
-          </div>
+          {displayedBids.length > 0 ? (
+            <div className="recent-price">
+              {displayedBids.map((bid) => (
+                <div key={bid.bidId} className="bid-item">
+                  <span>{bid.bidAmount.toLocaleString()}원</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="recent-price">입찰이 없습니다</div>
+          )}
+          {hasMoreBids && (
+            <div className="recent-price-button-container">
+              <button className="recent-price-button" onClick={loadMoreBids}>
+                제시가 더보기
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="product-detail-right">
@@ -151,17 +174,17 @@ function ProductDetailPage() {
         <div className="purchase-offer">
           <div className="offer-title">
             <div className="offer-header">구매 제시가</div>
-            <div className="offer-description"> (원하는 금액을 제시해주세요. 500원 단위로 가능합니다.)</div>
+            <div className="offer-description">&nbsp;(원하는 금액을 제시해주세요. 500원 단위로 가능합니다.)</div>
           </div>
           <div className="offer-input">
             <input
-              type="number"
+              type="text"
               placeholder="제시가 입력"
               className="offer-value"
               value={bidAmount}
               onChange={(e) => setBidAmount(e.target.value)}
             />
-            <button className="offer-button" onClick={handleBidSubmit}>등록</button>
+            <button className="offer-button" onClick={handleBidSubmit}>등 록</button>
           </div>
         </div>
       </div>
