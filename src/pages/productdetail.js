@@ -46,7 +46,7 @@ function ProductDetailPage() {
     };
   
     fetchBids();
-  
+
     const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client({
       webSocketFactory: () => socket,
@@ -57,8 +57,8 @@ function ProductDetailPage() {
           try {
             const bidNotification = JSON.parse(message.body);
             console.log('파싱된 입찰 데이터:', bidNotification);
-  
-            // 새로운 입찰 정보를 기존 bids 배열에 추가
+        
+            // 상태 업데이트
             setBids((prevBids) => [
               ...prevBids,
               {
@@ -102,6 +102,11 @@ function ProductDetailPage() {
       alert(error.response?.data || "입찰에 실패했습니다.");
     }
   };
+
+  // 상태 업데이트 확인용 useEffect
+  useEffect(() => {
+    console.log('현재 bids 상태:', bids);
+  }, [bids]);
 
   if (loading || error || !product) {
     return (
