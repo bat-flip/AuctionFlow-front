@@ -12,78 +12,53 @@ function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [bidAmount, setBidAmount] = useState('');
-  const [bids, setBids] = useState([]);
+  const [bidHistory, setBidHistory] = useState([]);
 
-  // 상품 정보 가져오기
   useEffect(() => {
-    const fetchProductDetails = async () => {
+    // 상품 상세 정보와 입찰 내역을 가져오는 함수
+    const fetchProductDetailsAndBids = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/items/${itemId}`, {
+        // 상품 상세 정보 가져오기
+        const productResponse = await axios.get(`http://localhost:8080/items/${itemId}`, {
           withCredentials: true,
         });
-        setProduct(response.data);
+        setProduct(productResponse.data);
+
+        // 입찰 내역 가져오기
+        const bidsResponse = await axios.get(`http://localhost:8080/auction/bids/${itemId}`, {
+          withCredentials: true,
+        });
+        setBidHistory(bidsResponse.data);
+
       } catch (error) {
-        setError('상품 정보가 존재하지 않습니다');
+        setError('상품 정보나 입찰 정보가 존재하지 않습니다.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProductDetails();
-  }, [itemId]);
+    fetchProductDetailsAndBids();
 
-  // 입찰 내역 가져오기 및 WebSocket 설정
-  useEffect(() => {
-    const fetchBids = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/auction/bids/${itemId}`, {
-          withCredentials: true,
-        });
-        setBids(response.data);
-      } catch (error) {
-        console.error('Failed to fetch bids:', error);
-      }
-    };
-
-    fetchBids();
-
+    // WebSocket 연결 설정
     const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client({
       webSocketFactory: () => socket,
+      connectHeaders: {},
+      debug: (str) => {
+        console.log(str);
+      },
       onConnect: () => {
-        console.log('웹소켓 연결 성공');
+        console.log('WebSocket에 연결되었습니다.');
         client.subscribe(`/topic/auction/${itemId}`, (message) => {
-          console.log('수신한 입찰 데이터:', message.body);
-          try {
-            const bidNotification = JSON.parse(message.body);
-            console.log('파싱된 입찰 데이터:', bidNotification);
-
-            // 상태 업데이트
-            setBids((prevBids) => [
-              ...prevBids,
-              {
-                bidId: bidNotification.bidId, // 서버에서 실제 ID를 받아와야 함
-                userId: bidNotification.userId,
-                userNickname: 'Unknown', // 서버에서 사용자 닉네임을 받아오는 방법 필요
-                itemId: itemId,
-                title: 'Auction Item', // 서버에서 아이템 제목을 받아오는 방법 필요
-                bidAmount: bidNotification.bidAmount,
-                bidTime: new Date().toISOString() // 현재 시간으로 설정
-              }
-            ]);
-          } catch (e) {
-            console.error('입찰 데이터 파싱 오류:', e);
-          }
+          const bidNotification = JSON.parse(message.body);
+          setBidHistory((prevBids) => [...prevBids, bidNotification]);
         });
       },
       onStompError: (frame) => {
-        console.error('STOMP error', frame);
-      },
-      debug: (str) => {
-        console.log('STOMP debug', str);
+        console.error('브로커 오류:', frame.headers.message);
+        console.error('추가 세부 사항:', frame.body);
       },
     });
-
     client.activate();
 
     return () => {
@@ -92,28 +67,25 @@ function ProductDetailPage() {
   }, [itemId]);
 
   const handleBidSubmit = async () => {
-    if (!bidAmount || isNaN(bidAmount)) {
-      alert("올바른 입찰 금액을 입력해 주세요.");
+    if (!bidAmount || isNaN(bidAmount) || bidAmount <= 0) {
+      alert('올바른 입찰 금액을 입력해주세요.');
       return;
     }
+
     try {
       await axios.post(`http://localhost:8080/auction/bid`, null, {
-        params: { itemId, bidAmount: parseFloat(bidAmount) },
+        params: { itemId, bidAmount },
         withCredentials: true,
       });
-      alert("입찰이 성공적으로 완료되었습니다.");
+      alert('입찰이 성공적으로 완료되었습니다.');
+      setBidAmount(''); // 성공적으로 입찰 후 입력 필드 초기화
     } catch (error) {
-      alert(error.response?.data || "입찰에 실패했습니다.");
+      alert(error.response?.data || '입찰에 실패했습니다.');
     }
   };
 
-  // 상태 업데이트 확인용 useEffect
-  useEffect(() => {
-    console.log('현재 bids 상태:', bids);
-  }, [bids]);
-
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>로딩 중...</div>;
   }
 
   if (error) {
@@ -141,17 +113,19 @@ function ProductDetailPage() {
         />
         <div className="recent-price-container">
           <div className="recent-price-header">최근 제시가</div>
-          {bids.length > 0 ? (
-            <div className="recent-price">
-              {bids.map((bid) => (
-                <div key={bid.bidId} className="bid-item">
-                  <span>{bid.bidAmount.toLocaleString()}원</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="recent-price">입찰이 없습니다</div>
-          )}
+          <div className="recent-price">
+            {bidHistory.length > 0 ? (
+              <ul>
+                {bidHistory.map(bid => (
+                  <li key={bid.bidId}>
+                    {bid.bidAmount.toLocaleString()}원
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              '없음'
+            )}
+          </div>
           <div className="recent-price-button-container">
             <button className="recent-price-button">제시가 더보기</button>
           </div>
@@ -177,17 +151,17 @@ function ProductDetailPage() {
         <div className="purchase-offer">
           <div className="offer-title">
             <div className="offer-header">구매 제시가</div>
-            <div className="offer-description">&nbsp;(원하는 금액을 제시해주세요. 500원 단위로 가능합니다.)</div>
+            <div className="offer-description"> (원하는 금액을 제시해주세요. 500원 단위로 가능합니다.)</div>
           </div>
           <div className="offer-input">
             <input
-              type="number" // 숫자 입력 필드로 변경
+              type="number"
               placeholder="제시가 입력"
               className="offer-value"
               value={bidAmount}
               onChange={(e) => setBidAmount(e.target.value)}
             />
-            <button className="offer-button" onClick={handleBidSubmit}>등 록</button>
+            <button className="offer-button" onClick={handleBidSubmit}>등록</button>
           </div>
         </div>
       </div>
