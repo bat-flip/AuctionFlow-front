@@ -14,6 +14,7 @@ function ProductDetailPage() {
   const [bidAmount, setBidAmount] = useState('');
   const [bids, setBids] = useState([]);
 
+  // 상품 정보 가져오기
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -31,7 +32,21 @@ function ProductDetailPage() {
     fetchProductDetails();
   }, [itemId]);
 
+  // 입찰 내역 가져오기 및 WebSocket 설정
   useEffect(() => {
+    const fetchBids = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/auction/bids/${itemId}`, {
+          withCredentials: true,
+        });
+        setBids(response.data);
+      } catch (error) {
+        console.error('Failed to fetch bids:', error);
+      }
+    };
+  
+    fetchBids();
+
     const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client({
       webSocketFactory: () => socket,
@@ -88,10 +103,14 @@ function ProductDetailPage() {
           className="product-detail-image"
         />
         <div className="recent-price-container">
-        <div className="recent-price-header">최근 제시가</div>
+          <div className="recent-price-header">최근 제시가</div>
           {bids.length > 0 ? (
             <div className="recent-price">
-              {bids[bids.length - 1].bidAmount.toLocaleString()}원
+              {bids.map((bid) => (
+                <div key={bid.bidId} className="bid-item">
+                  <span>{bid.bidAmount.toLocaleString()}원</span>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="recent-price">입찰이 없습니다</div>
@@ -120,7 +139,7 @@ function ProductDetailPage() {
         </div>
         <div className="purchase-offer">
           <div className="offer-title">
-          <div className="offer-header">구매 제시가</div>
+            <div className="offer-header">구매 제시가</div>
             <div className="offer-description">&nbsp;(원하는 금액을 제시해주세요. 500원 단위로 가능합니다.)</div>
           </div>
           <div className="offer-input">
