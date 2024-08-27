@@ -47,7 +47,7 @@
   margin-left: 10px;
   background-color: #eee;
   border-radius: 8px;
-  width: 15%;
+  display: inline-block; /* 텍스트 길이에 맞게 너비 조정 */
 }
 
 .StoreImage-container {
@@ -111,10 +111,11 @@
   transition: border-color 0.3s;
   font-family: 'Pretendard', sans-serif;
 }
-.StoreSet-button {
+
+.StoreSet-button,
+.StoreSet-button-delete {
   display: inline-block;
   padding: 8px 20px;
-  margin-top: 10px;
   font-size: 13px;
   color: #ffffff;
   background-color: #000000;
@@ -127,6 +128,12 @@
 
 .StoreSet-button:hover {
 background-color: #222222;
+}
+
+.setting-footer {
+  display: flex;
+  gap: 10px; /* 버튼 간의 간격 조정 */
+  margin-top: 20px; /* 상단 여백 */
 }
 
 input[type="file"] {
@@ -199,6 +206,17 @@ display: none;
 }
 
 
-
-
-  
+.success-message {
+  font-family: 'Pretendard', sans-serif;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #040404; /* 메시지 배경색 */
+  color: white; /* 텍스트 색상 */
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+}
