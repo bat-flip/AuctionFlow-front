@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser } from 'react-icons/fa';
 import axios from 'axios';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -44,7 +44,7 @@ function ProductDetailPage() {
         console.error('Failed to fetch bids:', error);
       }
     };
-  
+
     fetchBids();
 
     const socket = new SockJS('http://localhost:8080/ws');
@@ -57,16 +57,16 @@ function ProductDetailPage() {
           try {
             const bidNotification = JSON.parse(message.body);
             console.log('파싱된 입찰 데이터:', bidNotification);
-        
+
             // 상태 업데이트
             setBids((prevBids) => [
               ...prevBids,
               {
-                bidId: Date.now(), // 임시 ID, 실제 ID로 변경 필요
+                bidId: bidNotification.bidId, // 서버에서 실제 ID를 받아와야 함
                 userId: bidNotification.userId,
-                userNickname: 'Unknown', // 사용자 닉네임을 서버에서 받아오는 방법 필요
+                userNickname: 'Unknown', // 서버에서 사용자 닉네임을 받아오는 방법 필요
                 itemId: itemId,
-                title: 'Auction Item', // 아이템 제목을 서버에서 받아오는 방법 필요
+                title: 'Auction Item', // 서버에서 아이템 제목을 받아오는 방법 필요
                 bidAmount: bidNotification.bidAmount,
                 bidTime: new Date().toISOString() // 현재 시간으로 설정
               }
@@ -83,18 +83,22 @@ function ProductDetailPage() {
         console.log('STOMP debug', str);
       },
     });
-  
+
     client.activate();
-  
+
     return () => {
       client.deactivate();
     };
   }, [itemId]);
 
   const handleBidSubmit = async () => {
+    if (!bidAmount || isNaN(bidAmount)) {
+      alert("올바른 입찰 금액을 입력해 주세요.");
+      return;
+    }
     try {
       await axios.post(`http://localhost:8080/auction/bid`, null, {
-        params: { itemId, bidAmount },
+        params: { itemId, bidAmount: parseFloat(bidAmount) },
         withCredentials: true,
       });
       alert("입찰이 성공적으로 완료되었습니다.");
@@ -108,14 +112,16 @@ function ProductDetailPage() {
     console.log('현재 bids 상태:', bids);
   }, [bids]);
 
-  if (loading || error || !product) {
-    return (
-      <div>
-        {loading && <div>Loading...</div>}
-        {error && <div>{error}</div>}
-        {!loading && !error && !product && <div>상품을 찾을 수 없습니다.</div>}
-      </div>
-    );
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!product) {
+    return <div>상품을 찾을 수 없습니다.</div>;
   }
 
   const imageUrl = product.productImageUrls && product.productImageUrls.length > 0
@@ -175,7 +181,7 @@ function ProductDetailPage() {
           </div>
           <div className="offer-input">
             <input
-              type="text"
+              type="number" // 숫자 입력 필드로 변경
               placeholder="제시가 입력"
               className="offer-value"
               value={bidAmount}
