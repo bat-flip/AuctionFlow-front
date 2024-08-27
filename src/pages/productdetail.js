@@ -44,17 +44,25 @@ function ProductDetailPage() {
         console.error('Failed to fetch bids:', error);
       }
     };
-  
+
     fetchBids();
 
     const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client({
       webSocketFactory: () => socket,
       onConnect: () => {
+        console.log('웹소켓 연결 성공');
         client.subscribe(`/topic/auction/${itemId}`, (message) => {
+          console.log('수신한 입찰 데이터:', message.body);
           const bid = JSON.parse(message.body);
           setBids((prevBids) => [...prevBids, bid]);
         });
+      },
+      onStompError: (frame) => {
+        console.error('STOMP error', frame);
+      },
+      debug: (str) => {
+        console.log('STOMP debug', str);
       },
     });
 
