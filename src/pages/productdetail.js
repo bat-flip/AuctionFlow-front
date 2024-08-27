@@ -44,9 +44,9 @@ function ProductDetailPage() {
         console.error('Failed to fetch bids:', error);
       }
     };
-
+  
     fetchBids();
-
+  
     const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client({
       webSocketFactory: () => socket,
@@ -54,8 +54,26 @@ function ProductDetailPage() {
         console.log('웹소켓 연결 성공');
         client.subscribe(`/topic/auction/${itemId}`, (message) => {
           console.log('수신한 입찰 데이터:', message.body);
-          const bid = JSON.parse(message.body);
-          setBids((prevBids) => [...prevBids, bid]);
+          try {
+            const bidNotification = JSON.parse(message.body);
+            console.log('파싱된 입찰 데이터:', bidNotification);
+  
+            // 새로운 입찰 정보를 기존 bids 배열에 추가
+            setBids((prevBids) => [
+              ...prevBids,
+              {
+                bidId: Date.now(), // 임시 ID, 실제 ID로 변경 필요
+                userId: bidNotification.userId,
+                userNickname: 'Unknown', // 사용자 닉네임을 서버에서 받아오는 방법 필요
+                itemId: itemId,
+                title: 'Auction Item', // 아이템 제목을 서버에서 받아오는 방법 필요
+                bidAmount: bidNotification.bidAmount,
+                bidTime: new Date().toISOString() // 현재 시간으로 설정
+              }
+            ]);
+          } catch (e) {
+            console.error('입찰 데이터 파싱 오류:', e);
+          }
         });
       },
       onStompError: (frame) => {
@@ -65,9 +83,9 @@ function ProductDetailPage() {
         console.log('STOMP debug', str);
       },
     });
-
+  
     client.activate();
-
+  
     return () => {
       client.deactivate();
     };
