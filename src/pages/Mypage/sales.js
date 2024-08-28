@@ -11,9 +11,9 @@ function SalesPage() {
       try {
         let url = 'http://localhost:8080/mypage/sell'; // 기본값: 전체
         if (filter === '진행중') {
-          url = 'http://localhost:8080/mypage/sell?statusType=2';
+          url = 'http://localhost:8080/mypage/sell?statusType=1';
         } else if (filter === '판매완료') {
-          url = 'http://localhost:8080/mypage/sell?statusType=3';
+          url = 'http://localhost:8080/mypage/sell?statusType=2';
         }
 
         const response = await fetch(url, {
@@ -48,25 +48,21 @@ function SalesPage() {
         <button onClick={() => handleFilterChange('판매완료')} className={filter === '판매완료' ? 'active' : ''}>판매 완료</button>
       </div>
       <div className="sales-grid">
-        {salesData.length > 0 ? (
-          salesData.map((product) => (
-            <Link 
-              key={product.itemId} 
-              to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
-              className="sales-card"
-            >
-              <img 
-                src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
-                alt={product.title} 
-                className="sales-image" 
-              />
-              <div className="sales-title">{product.title}</div>
-              <div className="sales-price">{product.startingBid.toLocaleString()}원</div>
-            </Link>
-          ))
-        ) : (
-          <div>판매 내역이 없습니다.</div>
-        )}
+        {salesData.map((product) => (
+          <Link 
+            key={product.itemId} 
+            to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
+            className="sales-card"
+          >
+            <img 
+              src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
+              alt={product.title} 
+              className="sales-image" 
+            />
+            <div className="sales-title">{product.title}</div>
+            <div className="sales-price">{product.startingBid.toLocaleString()}원</div>
+          </Link>
+        ))}
       </div>
     </div>
   );

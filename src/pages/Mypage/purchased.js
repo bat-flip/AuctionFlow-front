@@ -9,11 +9,11 @@ function PurchasedPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = 'http://localhost:8080/mypage/mylist?statusType=1'; // 기본값: 전체
+        let url = 'http://localhost:8080/mypage/mylist'; // 기본값: 전체
         if (filter === '진행중') {
-          url = 'http://localhost:8080/mypage/mylist?statusType=2';
+          url = 'http://localhost:8080/mypage/mylist?statusType=1';
         } else if (filter === '구매완료') {
-          url = 'http://localhost:8080/mypage/mylist?statusType=3';
+          url = 'http://localhost:8080/mypage/mylist?statusType=2';
         }
 
         const response = await fetch(url, {
@@ -48,25 +48,21 @@ function PurchasedPage() {
         <button onClick={() => handleFilterChange('구매완료')} className={filter === '구매완료' ? 'active' : ''}>구매 완료</button>
       </div>
       <div className="purchased-grid">
-        {purchasedData.length > 0 ? (
-          purchasedData.map((product) => (
-            <Link 
-              key={product.itemId} 
-              to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
-              className="purchased-card"
-            >
-              <img 
-                src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
-                alt={product.title} 
-                className="purchased-image" 
-              />
-              <div className="purchased-title">{product.title}</div>
-              <div className="purchased-price">{product.startingBid.toLocaleString()}원</div>
-            </Link>
-          ))
-        ) : (
-          <div>구매 내역이 없습니다.</div>
-        )}
+        {purchasedData.map((product) => (
+          <Link 
+            key={product.itemId} 
+            to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
+            className="purchased-card"
+          >
+            <img 
+              src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
+              alt={product.title} 
+              className="purchased-image" 
+            />
+            <div className="purchased-title">{product.title}</div>
+            <div className="purchased-price">{product.startingBid.toLocaleString()}원</div>
+          </Link>
+        ))}
       </div>
     </div>
   );

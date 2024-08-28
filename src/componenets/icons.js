@@ -1,21 +1,36 @@
+// src/components/Icons.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅 가져오기
+import { useApp } from '../context/AppContext'; // AppContext 사용
 import './icons.css'; // 아이콘 스타일을 위한 CSS 파일
 
 function Icons() {
   const [isNotificationHovered, setNotificationHovered] = useState(false); // 상태 추가
   const navigate = useNavigate(); // useNavigate 훅 초기화
+  const { isAuthenticated, setShowLoginModal } = useApp(); // 로그인 상태와 모달 제어 함수 가져오기
 
   const handleChatClick = () => {
-    navigate('/mypage/talk'); // '/talk' 경로로 이동
+    if (isAuthenticated) {
+      navigate('/mypage/talk'); // '/talk' 경로로 이동
+    } else {
+      setShowLoginModal(true); // 로그인 모달 열기
+    }
   };
 
   const handleHeartClick = () => {
-    navigate('/mypage/fav'); // '/favorites' 경로로 이동 (예시)
+    if (isAuthenticated) {
+      navigate('/mypage/fav'); // '/favorites' 경로로 이동
+    } else {
+      setShowLoginModal(true); // 로그인 모달 열기
+    }
   };
 
   const handlePostButtonClick = () => {
-    navigate('/post'); // '/post' 경로로 이동
+    if (isAuthenticated) {
+      navigate('/post'); // '/post' 경로로 이동
+    } else {
+      setShowLoginModal(true); // 로그인 모달 열기
+    }
   };
 
   const handleNotificationClick = (notification) => {
