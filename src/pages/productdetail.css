@@ -24,8 +24,8 @@
 
 .product-detail-image {
     width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
-    height: auto; /* 이미지 비율을 유지한 채로 자동으로 높이를 설정 */
-    max-width: 420px; /* 원하는 최대 너비로 설정 (필요시) */
+    height: 100%; /* 이미지 비율을 유지한 채로 자동으로 높이를 설정 */
+    min-width: 420px; /* 원하는 최대 너비로 설정 (필요시) */
     aspect-ratio: 1 / 1; /* 정사각형 비율을 설정 */
     border-radius: 10px;
     object-fit: cover;

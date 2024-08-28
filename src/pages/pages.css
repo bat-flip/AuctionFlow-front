@@ -46,8 +46,9 @@
 
 /* 제품 이미지 스타일링 */
 .product-image {
-  object-fit: cover; /* 이미지를 카드에 맞추기 */
+  object-fit: contain; /* 이미지를 카드에 맞추기 */
   border-radius: 5px;
+  aspect-ratio: 1 / 1; /* 정사각형 비율을 설정 */
 }
 
 /* 제품 제목 스타일링 */
