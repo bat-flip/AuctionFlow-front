@@ -31,23 +31,27 @@ function Favpage() {
   return (
     <div className="fav">
       <div className="fav-header">관심 상품</div>
-      <div className="fav-grid">
-        {products.map((product) => (
-          <Link 
-            key={product.itemId} 
-            to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
-            className="fav-card"
-          >
-            <img 
-              src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
-              alt={product.title} 
-              className="fav-image" 
-            />
-            <div className="fav-title">{product.title}</div>
-            <div className="fav-price">{product.startingBid.toLocaleString()}원</div>
-          </Link>
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <div className="fav-empty-message">관심 상품이 아직 없습니다. 관심 상품을 추가해보세요.</div>
+      ) : (
+        <div className="fav-grid">
+          {products.map((product) => (
+            <Link 
+              key={product.itemId} 
+              to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
+              className="fav-card"
+            >
+              <img 
+                src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
+                alt={product.title} 
+                className="fav-image" 
+              />
+              <div className="fav-title">{product.title}</div>
+              <div className="fav-price">{product.startingBid.toLocaleString()}원</div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

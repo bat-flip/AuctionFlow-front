@@ -17,6 +17,7 @@ function ProductDetailPage() {
   const [page, setPage] = useState(0); // 현재 페이지를 추적
   const [hasMoreBids, setHasMoreBids] = useState(true); // 더 많은 입찰이 있는지 확인
   const [bidError, setBidError] = useState(''); // 입찰 오류 메시지 상태
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const BIDS_PER_PAGE = 5; // 페이지당 입찰 수
 
@@ -148,6 +149,18 @@ function ProductDetailPage() {
     validateBidAmount(value);
   };
 
+  const handleNextImage = () => {
+    if (product && product.productImageUrls.length > 1) {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.productImageUrls.length);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (product && product.productImageUrls.length > 1) {
+      setCurrentImageIndex((prevIndex) => (prevIndex - 1 + product.productImageUrls.length) % product.productImageUrls.length);
+    }
+  };
+
   if (loading || error || !product) {
     return (
       <div>
@@ -158,21 +171,36 @@ function ProductDetailPage() {
     );
   }
 
+  const dots = product?.productImageUrls.map((_, index) => (
+    <span
+      key={index}
+      className={`dot ${currentImageIndex === index ? 'active' : ''}`}
+      onClick={() => setCurrentImageIndex(index)}
+    />
+  ));
+  
   const imageUrl = product.productImageUrls && product.productImageUrls.length > 0
-    ? product.productImageUrls[0]
+    ? product.productImageUrls[currentImageIndex]
     : 'https://via.placeholder.com/150';
 
   return (
     <div className="product-detail-container">
       <div className="product-detail-left">
-        <div className="pd-store">
+      <div className="pd-store">
           <FaRegUser /> {product.userName} 님의 상점
         </div>
-        <img
-          src={imageUrl}
-          alt={product.title}
-          className="product-detail-image"
-        />
+        <div className="image-gallery">
+          <div className="dot-container">
+            {dots}
+          </div>
+          <button className="arrow left" onClick={handlePrevImage}>‹</button>
+          <img
+            src={imageUrl}
+            alt={product.title}
+            className="product-detail-image"
+          />
+          <button className="arrow right" onClick={handleNextImage}>›</button>
+        </div>
         <div className="recent-price-container">
           <div className="recent-price-header">최근 제시가</div>
           {displayedBids.length > 0 ? (
@@ -184,7 +212,7 @@ function ProductDetailPage() {
               ))}
             </div>
           ) : (
-            <div className="recent-price">입찰이 없습니다</div>
+            <div className="recent-price">입찰 금액이 아직 존재하지 않습니다.</div>
           )}
           {hasMoreBids && (
             <div className="recent-price-button-container">

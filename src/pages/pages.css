@@ -29,7 +29,7 @@
 .product-card {
   padding: 5px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -37,8 +37,7 @@
 }
 
 .product-card:hover {
-  background-color: #f9f9f9; /* 밝은 회색 배경색 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   transition: background-color 0.3s ease;
 }
@@ -53,19 +52,19 @@
 
 /* 제품 제목 스타일링 */
 .product-title {
-  font-size: 16px;
-  font-weight: 300;
+  font-size: 14px;
+  font-weight: 400;
   letter-spacing: -0.3px;
   color: #444444;
-  margin: 10px 4px 10px;
+  margin: 20px 6px 0px;
 }
 
 /* 제품 가격 스타일링 */
 .product-price {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  margin: 2px 6px;
+  margin: 5px 6px 10px;
 }
 
 /* 반응형 스타일링 */

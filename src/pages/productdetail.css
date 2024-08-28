@@ -23,15 +23,64 @@
     flex-direction: column; /* 자식 요소들을 세로 방향으로 배치 */
 }
 
+.image-gallery {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
 .product-detail-image {
     width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
-    height: 100%; /* 이미지 비율을 유지한 채로 자동으로 높이를 설정 */
+    height: auto; /* 이미지 비율을 유지한 채로 자동으로 높이를 설정 */
     min-width: 420px; /* 원하는 최대 너비로 설정 (필요시) */
     aspect-ratio: 1 / 1; /* 정사각형 비율을 설정 */
     border-radius: 10px;
-    object-fit: cover;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    object-fit: contain;
 }
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .left {
+    left: 0;
+  }
+  
+  .right {
+    right: 0;
+  }
+
+  .dot-container {
+    position: absolute;
+    bottom: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .dot {
+    height: 5px;
+    width: 5px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s;
+  }
+  
+  .dot.active {
+    background-color: #494949;
+  }
+  
 
 .recent-price-container {
     margin-top: 60px;
@@ -51,11 +100,16 @@
     border: 1px solid #d6ecdc;
     border-radius: 8px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     color: #28A745; /* 초록색 계열 텍스트 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-size: 18px;
     margin-top: 10px;
+}
+
+.recent-price .bid-item {
+    margin-bottom: 5px; /* 필요에 따라 조정 */
 }
 
 .recent-price-button-container {

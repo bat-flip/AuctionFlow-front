@@ -42,28 +42,32 @@ function SalesPage() {
   return (
     <div className="sales">
       <div className="sales-header">판매 내역</div>
-      <div className="filter-buttons">
-        <button onClick={() => handleFilterChange('전체')} className={filter === '전체' ? 'active' : ''}>전체 목록</button>
-        <button onClick={() => handleFilterChange('진행중')} className={filter === '진행중' ? 'active' : ''}>진행 중</button>
-        <button onClick={() => handleFilterChange('판매완료')} className={filter === '판매완료' ? 'active' : ''}>판매 완료</button>
+      <div className="filter-tabs">
+        <button onClick={() => handleFilterChange('전체')} className={`tab ${filter === '전체' ? 'active' : ''}`}>전체 목록</button>
+        <button onClick={() => handleFilterChange('진행중')} className={`tab ${filter === '진행중' ? 'active' : ''}`}>진행 중</button>
+        <button onClick={() => handleFilterChange('판매완료')} className={`tab ${filter === '판매완료' ? 'active' : ''}`}>판매 완료</button>
       </div>
-      <div className="sales-grid">
-        {salesData.map((product) => (
-          <Link 
-            key={product.itemId} 
-            to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
-            className="sales-card"
-          >
-            <img 
-              src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
-              alt={product.title} 
-              className="sales-image" 
-            />
-            <div className="sales-title">{product.title}</div>
-            <div className="sales-price">{product.startingBid.toLocaleString()}원</div>
-          </Link>
-        ))}
-      </div>
+      {salesData.length === 0 ? (
+        <div className="sales-empty-message">판매 내역이 존재하지 않습니다.</div>
+      ) : (
+        <div className="sales-grid">
+          {salesData.map((product) => (
+            <Link 
+              key={product.itemId} 
+              to={`/products/${product.itemId}`} // 클릭 시 이동할 경로 설정
+              className="sales-card"
+            >
+              <img 
+                src={product.productImageUrls[0] || 'https://via.placeholder.com/150'} 
+                alt={product.title} 
+                className="sales-image" 
+              />
+              <div className="sales-title">{product.title}</div>
+              <div className="sales-price">{product.startingBid.toLocaleString()}원</div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
