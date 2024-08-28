@@ -3,7 +3,7 @@
 .nav-bar {
   display: flex;
   gap: 60px;
-  margin-top: 10px;
+  margin-top: 20px;
   border-bottom: 1px solid rgb(227, 227, 227); /* 내비게이션 바의 경계선 추가 */
 }
 

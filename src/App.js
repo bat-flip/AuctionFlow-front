@@ -14,6 +14,7 @@ import ProductPage from './pages/product';
 import ProductDetailPage from './pages/productdetail';
 import TimeoutPage from './pages/timeout';
 import SoldoutPage from './pages/soldout';
+import SearchResultsPage from './pages/searchresult';
 import { AppProvider } from './context/AppContext';
 import './App.css';
 
@@ -51,6 +52,8 @@ function App() {
             <Route path="/products/:itemId" element={<ProductDetailPage />} />
             <Route path="/timeout" element={<TimeoutPage />} />
             <Route path="/soldout" element={<SoldoutPage />} />
+            {/* 검색 페이지 추가 */}
+            <Route path="/search" element={<SearchResultsPage />} />
           </Routes>
         </Default>
       </AppProvider>
