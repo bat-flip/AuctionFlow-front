@@ -14,10 +14,11 @@ function ProductDetailPage() {
   const [bidAmount, setBidAmount] = useState('');
   const [bids, setBids] = useState([]);
   const [displayedBids, setDisplayedBids] = useState([]);
-  const [page, setPage] = useState(0); // Track current page
-  const [hasMoreBids, setHasMoreBids] = useState(true); // Check if there are more bids to load
+  const [page, setPage] = useState(0); // 현재 페이지를 추적
+  const [hasMoreBids, setHasMoreBids] = useState(true); // 더 많은 입찰이 있는지 확인
+  const [bidError, setBidError] = useState(''); // 입찰 오류 메시지 상태
 
-  const BIDS_PER_PAGE = 5; // Number of bids to display per page
+  const BIDS_PER_PAGE = 5; // 페이지당 입찰 수
 
   // 상품 정보 가져오기
   useEffect(() => {
@@ -45,11 +46,11 @@ function ProductDetailPage() {
           withCredentials: true,
         });
 
-        // Assume the bids have a 'bidTime' field
+        // 입찰 시간으로 정렬
         const sortedBids = response.data.sort((a, b) => new Date(b['bidTime']) - new Date(a['bidTime']));
         setBids(sortedBids);
-        setDisplayedBids(sortedBids.slice(0, BIDS_PER_PAGE)); // Initialize with first page
-        setHasMoreBids(sortedBids.length > BIDS_PER_PAGE); // Check if there are more bids
+        setDisplayedBids(sortedBids.slice(0, BIDS_PER_PAGE)); // 첫 페이지로 초기화
+        setHasMoreBids(sortedBids.length > BIDS_PER_PAGE); // 더 많은 입찰이 있는지 확인
       } catch (error) {
         console.error('Failed to fetch bids:', error);
       }
@@ -65,8 +66,8 @@ function ProductDetailPage() {
           const bid = JSON.parse(message.body);
           setBids((prevBids) => {
             const updatedBids = [bid, ...prevBids].sort((a, b) => new Date(b['bidTime']) - new Date(a['bidTime']));
-            setDisplayedBids(updatedBids.slice(0, (page + 1) * BIDS_PER_PAGE)); // Update displayed bids based on page
-            setBids(updatedBids); // Update all bids state
+            setDisplayedBids(updatedBids.slice(0, (page + 1) * BIDS_PER_PAGE)); // 페이지에 따라 표시된 입찰 업데이트
+            setBids(updatedBids); // 모든 입찰 상태 업데이트
             return updatedBids;
           });
         });
@@ -83,6 +84,7 @@ function ProductDetailPage() {
     };
   }, [itemId, page]);
 
+  // 입찰 금액 유효성 검사 및 제출
   const handleBidSubmit = async () => {
     try {
       await axios.post(`http://localhost:8080/auction/bid`, null, {
@@ -90,11 +92,14 @@ function ProductDetailPage() {
         withCredentials: true,
       });
       alert("입찰이 성공적으로 완료되었습니다.");
+      setBidAmount(''); // 입력 필드 초기화
+      setBidError(''); // 오류 메시지 초기화
     } catch (error) {
       alert(error.response?.data || "입찰에 실패했습니다.");
     }
   };
 
+  // 더 많은 입찰 로드
   const loadMoreBids = () => {
     setPage((prevPage) => {
       const newPage = prevPage + 1;
@@ -107,6 +112,7 @@ function ProductDetailPage() {
     });
   };
 
+  // 관심 상품 추가
   const handleAddToWishlist = async () => {
     try {
       await axios.post(
@@ -125,6 +131,22 @@ function ProductDetailPage() {
     }
   };
 
+  // 입찰 금액 유효성 검사
+  const validateBidAmount = (value) => {
+    const parsedBidAmount = parseInt(value, 10);
+    if (isNaN(parsedBidAmount) || parsedBidAmount % 100 !== 0) {
+      setBidError("입찰 금액은 100원 단위로 가능합니다.");
+    } else {
+      setBidError('');
+    }
+  };
+
+  // 입찰 금액 입력 처리
+  const handleBidAmountChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
+    setBidAmount(value);
+    validateBidAmount(value);
+  };
 
   if (loading || error || !product) {
     return (
@@ -193,7 +215,7 @@ function ProductDetailPage() {
         <div className="purchase-offer">
           <div className="offer-title">
             <div className="offer-header">구매 제시가</div>
-            <div className="offer-description">&nbsp;(원하는 금액을 제시해주세요. 500원 단위로 가능합니다.)</div>
+            <div className="offer-description">&nbsp;(원하는 금액을 제시해주세요. 입찰은 100원 단위로 가능합니다.)</div>
           </div>
           <div className="offer-input">
             <input
@@ -201,10 +223,11 @@ function ProductDetailPage() {
               placeholder="제시가 입력"
               className="offer-value"
               value={bidAmount}
-              onChange={(e) => setBidAmount(e.target.value)}
+              onChange={handleBidAmountChange}
             />
             <button className="offer-button" onClick={handleBidSubmit}>등 록</button>
           </div>
+          {bidError && <div className="bid-error">{bidError}</div>}
         </div>
       </div>
     </div>

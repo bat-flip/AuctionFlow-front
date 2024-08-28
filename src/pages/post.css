@@ -239,3 +239,11 @@ hr {
     justify-content: center; /* 가로 중앙 정렬 */
     margin-top: 30px; /* 버튼과 상단 요소 사이의 간격 조정 */
 }
+
+.error-message {
+    font-family: 'Pretendard', sans-serif;
+    color: #e72a24; /* 부드러운 붉은색 */
+    font-weight: 500; /* 강조를 위해 약간 두께 추가 */
+    font-size: 14px;
+    margin-top: 5px;
+}

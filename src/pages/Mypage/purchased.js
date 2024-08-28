@@ -30,7 +30,7 @@ function PurchasedPage() {
       } catch (error) {
         console.error('구매 데이터 가져오기 오류:', error);
       }
-    };
+    }; 
 
     fetchData();
   }, [filter]);

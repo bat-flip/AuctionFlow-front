@@ -241,3 +241,8 @@
     background-color: #218838; /* 버튼 호버 시 진한 초록색 */
 }
 
+.bid-error {
+    color: #e74c3c; /* 빨간색 오류 메시지 텍스트 */
+    font-size: 14px;
+    margin-top: 5px; /* 입력 필드와 오류 메시지 사이의 간격 */
+}
