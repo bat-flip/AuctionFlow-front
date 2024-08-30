@@ -1,26 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs'; // Named export
 import './talk.css';
 
 function TalkPage() {
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [messages, setMessages] = useState([]); // State for chat messages
-  const [newMessage, setNewMessage] = useState(''); // State for new message input
+  const [selectedUser, setSelectedUser] = useState(null);  // 선택된 사용자
+  const [messages, setMessages] = useState([]);  // 채팅 메시지 상태
+  const [newMessage, setNewMessage] = useState('');  // 새 메시지 입력 상태
+  const [chatRooms, setChatRooms] = useState([]);  // 채팅방 목록 상태
+  const [loading, setLoading] = useState(true);  // 로딩 상태
+  const [error, setError] = useState(null);  // 오류 상태
+  const [stompClient, setStompClient] = useState(null);  // STOMP 클라이언트
 
-  const users = [
-    { id: 1, name: '으뱌뱌', profilePic: 'https://i.pinimg.com/564x/49/83/87/49838777cfffa05a18681a83b1f80a71.jpg' },
-    { id: 2, name: 'dodhddl', profilePic: 'https://i.pinimg.com/564x/eb/be/7b/ebbe7b2ced789865d237dfce9d67f03d.jpg' },
-    { id: 3, name: 'user3', profilePic: 'profile3.jpg' },
-    { id: 1, name: '으뱌뱌', profilePic: 'https://i.pinimg.com/564x/49/83/87/49838777cfffa05a18681a83b1f80a71.jpg' },
-    { id: 2, name: 'dodhddl', profilePic: 'https://i.pinimg.com/564x/eb/be/7b/ebbe7b2ced789865d237dfce9d67f03d.jpg' },
-    { id: 3, name: 'user3', profilePic: 'profile3.jpg' },
-    { id: 1, name: '으뱌뱌', profilePic: 'https://i.pinimg.com/564x/49/83/87/49838777cfffa05a18681a83b1f80a71.jpg' },
-    { id: 2, name: 'dodhddl', profilePic: 'https://i.pinimg.com/564x/eb/be/7b/ebbe7b2ced789865d237dfce9d67f03d.jpg' },
-    { id: 3, name: 'user3', profilePic: 'profile3.jpg' },
-    { id: 1, name: '으뱌뱌', profilePic: 'https://i.pinimg.com/564x/49/83/87/49838777cfffa05a18681a83b1f80a71.jpg' },
-    { id: 2, name: 'dodhddl', profilePic: 'https://i.pinimg.com/564x/eb/be/7b/ebbe7b2ced789865d237dfce9d67f03d.jpg' },
-    { id: 3, name: 'user3', profilePic: 'profile3.jpg' }
-    // Add more users here if needed
-  ];
+  const messageEndRef = useRef(null);
+
+  useEffect(() => {
+    fetchChatRooms();
+
+    const socket = new SockJS('http://localhost:8080/ws');
+    const client = Stomp.over(socket);
+    
+    client.connect({}, (frame) => {
+      console.log('Connected: ' + frame);
+
+      // 채팅 메시지 구독
+      client.subscribe('/topic/messages', (message) => {
+        const receivedMessage = JSON.parse(message.body);
+        console.log('새 메시지:', receivedMessage);
+        setMessages(prevMessages => [...prevMessages, receivedMessage]);
+        scrollToBottom();
+    });
+    }, (error) => {
+      console.error('STOMP 연결 오류:', error);
+    });
+
+    setStompClient(client);
+
+    return () => {
+      if (client) {
+        client.disconnect();
+      }
+    };
+}, []);
+
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  const fetchChatRooms = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/chat/myroomlist', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        throw new Error('채팅방 목록을 가져오는 데 실패했습니다.');
+      }
+
+      const data = await response.json();
+      console.log('채팅방 목록:', data);
+      setChatRooms(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('오류 발생:', error);
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
@@ -31,43 +83,63 @@ function TalkPage() {
   };
 
   const handleSendMessage = () => {
-    if (newMessage.trim() === '') return; // Avoid sending empty messages
-    setMessages([...messages, { user: selectedUser, text: newMessage }]);
-    setNewMessage(''); // Clear the input field
-  };
+    if (newMessage.trim() === '' || !selectedUser) return;
+
+    if (stompClient) {
+        const message = {
+            user: selectedUser,
+            text: newMessage,
+            chatRoomId: selectedUser.chatRoomId
+        };
+
+        stompClient.send('/app/chat/sendMessage', {}, JSON.stringify(message));
+        setNewMessage('');
+    }
+};
+
+const scrollToBottom = () => {
+  messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+};
 
   return (
     <div className="talk">
       <div className="talk-sidebar">
         <div className="talk-sidebar-header">dlwnajr님의 채팅방</div>
         <div className="talk-user-list">
-          {users.map(user => (
-            <div 
-              key={user.id} 
-              className="talk-user-item" 
-              onClick={() => handleUserClick(user)}
-            >
-              <img src={user.profilePic} alt={user.name} className="talk-user-pic" />
-              <div className="talk-user-name">{user.name}</div>
-            </div>
-          ))}
+          {loading ? (
+            <div>로딩 중...</div>
+          ) : error ? (
+            <div>오류: {error}</div>
+          ) : (
+            chatRooms.map((room, index) => (
+              <div 
+                key={index} 
+                className="talk-user-item" 
+                onClick={() => handleUserClick(room.buyer)}
+              >
+                <img src={room.buyer.profileImageUrl} alt={room.buyer.nickname} className="talk-user-pic" />
+                <div className="talk-user-name">{room.buyer.nickname}</div>
+              </div>
+            ))
+          )}
         </div>
       </div>
       <div className="talk-main">
         {selectedUser ? (
           <>
             <div className="talk-profile">
-              <img src={selectedUser.profilePic} alt={selectedUser.name} className="talk-profile-pic" />
-              <div className="talk-profile-name">{selectedUser.name}</div>
+              <img src={selectedUser.profileImageUrl} alt={selectedUser.nickname} className="talk-profile-pic" />
+              <div className="talk-profile-name">{selectedUser.nickname}</div>
             </div>
             <div className="talk-chat">
-              <div className="talk-chat-messages">
+            <div className="talk-chat-messages">
                 {messages.map((message, index) => (
-                  <div key={index} className="talk-chat-message">
-                    <b>{message.user.name}:</b> {message.text}
-                  </div>
+                    <div key={index} className="talk-chat-message">
+                        <b>{message.user.nickname}:</b> {message.text}
+                    </div>
                 ))}
-              </div>
+                <div ref={messageEndRef} />
+            </div>
               <div className="talk-chat-footer">
                 <input 
                   type="text" 
